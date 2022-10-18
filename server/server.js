@@ -1,5 +1,6 @@
 import express, { response } from 'express';
 import cors from 'cors';
+import fs from 'fs';
 
 const app = express();
 const port = 8000;
@@ -7,24 +8,34 @@ const port = 8000;
 // NOTE: This datastore is not complete
 // YOu might have a list of categories, and within each, nest a list of category items
 // Also, maybe come up with a name other than identiFunners (yea ik it's quite impossible but try your best)
-const sampleDataStore = {
+let sampleDataStore = {
   users: [],
-  identiFunners: [
-    {
-      id: 0,
-      category: 'Music',
-      categoryItem: 'Jacob Sartorius - swatshirt',
-      rating: 10000,
-    },
-    {
-      id: 1,
-      category: 'Anime',
-      categoryItem: 'Spy X Family',
-      rating: 10,
-    },
-  ],
-  totalIdentiFunners: 2,
+  identiFunners: [],
+  totalIdentiFunners: 0,
 };
+
+fs.readFile('data.json', (err, data) => {
+  if (err) {
+    console.log(err);
+    return;
+  }
+  sampleDataStore = JSON.parse(data);
+});
+
+const save = () => {
+  fs.writeFile('data.json', JSON.stringify(sampleDataStore), (err) => {
+    if (err) {
+      console.log(err);
+    }
+  });
+};
+// const save = () => {
+//   try {
+//     fs.writeFileSync('data.json', JSON.stringify(sampleDataStore));
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
 
 app.use(express.json());
 app.use(cors());
@@ -71,7 +82,7 @@ app.post('/demo', (req, res) => {
     categoryItem,
     rating,
   });
-
+  save();
   res.json({ id: newId });
 });
 
@@ -87,6 +98,7 @@ app.delete('/demo/:id', (req, res) => {
   sampleDataStore.identiFunners = sampleDataStore.identiFunners.filter(
     (item) => item.id !== parseInt(req.params.id)
   );
+  save();
   res.json({});
 });
 
