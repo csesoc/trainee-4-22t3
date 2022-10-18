@@ -14,6 +14,9 @@ let sampleDataStore = {
   totalIdentiFunners: 0,
 };
 
+/**
+ * Reads data.json into the in-memory data store
+ */
 fs.readFile('data.json', (err, data) => {
   if (err) {
     console.log(err);
@@ -22,6 +25,9 @@ fs.readFile('data.json', (err, data) => {
   sampleDataStore = JSON.parse(data);
 });
 
+/**
+ * Saves the dataStore to the JSON
+ */
 const save = () => {
   fs.writeFile('data.json', JSON.stringify(sampleDataStore), (err) => {
     if (err) {
