@@ -11,17 +11,19 @@ const sampleDataStore = {
   users: [],
   identiFunners: [
     {
+      id: 0,
       category: 'Music',
       categoryItem: 'Jacob Sartorius - swatshirt',
       rating: 10000,
     },
     {
+      id: 1,
       category: 'Anime',
       categoryItem: 'Spy X Family',
       rating: 10,
     },
   ],
-  totalIdentiFunners: 0,
+  totalIdentiFunners: 2,
 };
 
 app.use(express.json());
@@ -58,6 +60,7 @@ app.post('/demo', (req, res) => {
   const { category, categoryItem, rating } = req.body;
   if (!category || !categoryItem || !rating) {
     res.status(500).json({ error: 'Please fill in all fields' });
+    return;
   }
 
   const newId = sampleDataStore.totalIdentiFunners;
@@ -70,6 +73,21 @@ app.post('/demo', (req, res) => {
   });
 
   res.json({ id: newId });
+});
+
+app.delete('/demo/:id', (req, res) => {
+  if (
+    !sampleDataStore.identiFunners.find(
+      (item) => item.id === parseInt(req.params.id)
+    )
+  ) {
+    res.status(500).json({ error: 'Item not found' });
+    return;
+  }
+  sampleDataStore.identiFunners = sampleDataStore.identiFunners.filter(
+    (item) => item.id !== parseInt(req.params.id)
+  );
+  res.json({});
 });
 
 app.listen(port, () => {
