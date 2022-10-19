@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FaWindowClose } from 'react-icons/fa';
+import { FaWindowClose, FaStar } from 'react-icons/fa';
 
 /**
  * A demo component to showcase connecting with a backend server
@@ -71,7 +71,18 @@ function Demo() {
             <div className="overflow-hidden">
               <h1 className="text-3xl font-bold">{item.category}</h1>
               <h2 className="text-xl">{item.categoryItem}</h2>
-              <h3>{item.rating}</h3>
+              <div className="flex justify-center">
+                {[...Array(10)].map((_, index) => (
+                  <button
+                    key={index}
+                    className={
+                      index < item.rating ? 'text-yellow-400' : 'text-gray-300'
+                    }
+                  >
+                    <FaStar />
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         ))}
@@ -110,7 +121,7 @@ function Demo() {
               max={10}
               value={rating}
               label="Rating"
-              onChange={(e) => setRating(e.target.value)}
+              onChange={(e) => setRating(parseInt(e.target.value))}
               className="shadow border rounded"
             />
           </div>
