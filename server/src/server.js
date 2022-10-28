@@ -16,8 +16,10 @@ let sampleDataStore = {
 
 let dataStore = {
   users: [],
+  categories: [],
   items: [],
   totalUsers: 0,
+  totalCategories: 0,
   totalItems: 0,
 };
 /**
@@ -118,9 +120,15 @@ app.post('/item', (req, res) => {
   const { category, itemName, rating, uId } = req.body;
   const user = dataStore.users.find((user) => user.uId === uId);
   const itemId = dataStore.totalItems;
+  const categoryId = dataStore.totalCategories;
+  const foundCategory = dataStore.categories.some((a) => a.name === category);
+  if (!foundCategory) {
+    dataStore.categories.push({ categoryId, category, custom: [] });
+  }
   user.userItems.push({ itemId, rating });
   dataStore.totalItems += 1;
-  dataStore.items.push({ itemId, category, itemName, custom: [] });
+  dataStore.totalCategories += 1;
+  dataStore.items.push({ itemId, categoryId, itemName, custom: [] });
   save();
   res.json({ itemId });
 });
@@ -131,13 +139,40 @@ app.get('/item/:uId', (req, res) => {
   const allItems = user.userItems.map((item) =>
     dataStore.items.find((a) => a.itemId === item.itemId)
   );
-  res.json(allItems);
-});
 
+  // for each item, check its categoryId and find it in dataStore.categories
+  const allCategories = allItems.map((item) =>
+    dataStore.categories.find(
+      (category) => item.categoryId === category.categoryId
+    )
+  );
+  const combined = [];
+  for (let i = 0; i < allItems.length; i++) {
+    combined.push({
+      itemName: allItems[i].itemName,
+      category: allCategories[i].category,
+      customItemFields: allItems[i].custom,
+      customCategoryFields: allCategories[i].custom,
+    });
+  }
+
+  res.json(combined);
+});
+/*
+app.get('/test/:uId', (req, res) => {
+  dataStore.categories.map((a) => {
+    dataStore.users.filter((item) => item.itemIds.includes(a.categoryId))
+  
+  }
+  res.json();
+});
+*/
 app.delete('/clear', (req, res) => {
   dataStore = {
     users: [],
     items: [],
+    categories: [],
+    totalCategories: 0,
     totalUsers: 0,
     totalItems: 0,
   };
