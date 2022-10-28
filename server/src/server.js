@@ -42,13 +42,6 @@ const save = () => {
     }
   });
 };
-// const save = () => {
-//   try {
-//     fs.writeFileSync('data.json', JSON.stringify(sampleDataStore));
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
 
 app.use(express.json());
 app.use(cors());
@@ -117,6 +110,12 @@ app.delete('/demo/:id', (req, res) => {
 
 app.post('/item', (req, res) => {
   const { categoryName, itemName, rating, uId } = req.body;
+  const foundCategory = dataStore.categories.some(
+    (a) => a.name === categoryName
+  );
+  if (!foundCategory) {
+    res.status(696).json({ error: 'Category does not exist' });
+  }
   const user = dataStore.users.find((user) => user.uId === uId);
   const itemId = dataStore.totalItems;
   user.userItems.push({ itemId, rating });
@@ -128,12 +127,11 @@ app.post('/item', (req, res) => {
 
 app.post('/category', (req, res) => {
   const { name } = req.body;
-  const foundCategory = dataStore.categories.some(
-    (a) => a.category === category
-  );
-  if (!foundCategory) {
-    dataStore.categories.push({ name, custom: [] });
+  const foundCategory = dataStore.categories.some((a) => a.name === name);
+  if (foundCategory) {
+    res.status(696).json({ error: 'Category already exists' });
   }
+  dataStore.categories.push({ name, custom: [] });
   save();
   res.json({ name });
 });
@@ -141,41 +139,16 @@ app.post('/category', (req, res) => {
 app.get('/item/:uId', (req, res) => {
   const uId = parseInt(req.params.uId);
   const user = dataStore.users.find((a) => a.uId === uId);
-  const allItems = user.userItems.map((item) =>
-    dataStore.items.find((a) => a.itemId === item.itemId)
-  );
+  const result = dataStore.categories.map((c) => ({
+    name: c.name,
+    items: user.userItems
+      .map((userItem) =>
+        dataStore.items.find((item) => item.itemId === userItem.itemId)
+      )
+      .filter((item) => item.categoryName === c.name),
+  }));
 
-  // for each item, check its categoryId and find it in dataStore.categories
-  const allCategories = allItems.map((item) =>
-    dataStore.categories.find(
-      (category) => item.categoryId === category.categoryId
-    )
-  );
-  const combined = [];
-  for (let i = 0; i < allItems.length; i++) {
-    combined.push({
-      itemName: allItems[i].itemName,
-      category: allCategories[i].category,
-      customItemFields: allItems[i].custom,
-      customCategoryFields: allCategories[i].custom,
-    });
-  }
-
-  res.json(combined);
-});
-
-// for each category, go through each item
-app.get('/get/categories', (req, res) => {
-  console.log('hi');
-  const associatedCategories = dataStore.categories.map((category) => {
-    console.log(category);
-    const item = dataStore.items.find(
-      (item) => item.categoryName === category.name
-    );
-    console.log(item);
-    return { category, item };
-  });
-  res.json(associatedCategories);
+  res.json(result);
 });
 
 app.delete('/clear', (req, res) => {

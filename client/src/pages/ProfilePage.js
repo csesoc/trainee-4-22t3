@@ -11,12 +11,13 @@ function ProfilePage() {
       .then((response) => setIdentiFunners(response.data));
     return () => setSuccess(false);
   }, [success]);
-  console.log(identiFunners.categories);
 
   return (
     <div>
-      {identiFunners.map((item) => (
-        <div>{item.category}</div>
+      {identiFunners.map((a) => (
+        <div>
+          {a.name} {a.items.map((b) => b.itemName)}
+        </div>
       ))}
       ProfilePage
     </div>
