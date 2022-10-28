@@ -19,7 +19,6 @@ let dataStore = {
   categories: [],
   items: [],
   totalUsers: 0,
-  totalCategories: 0,
   totalItems: 0,
 };
 /**
@@ -117,20 +116,26 @@ app.delete('/demo/:id', (req, res) => {
 });
 
 app.post('/item', (req, res) => {
-  const { category, itemName, rating, uId } = req.body;
+  const { categoryName, itemName, rating, uId } = req.body;
   const user = dataStore.users.find((user) => user.uId === uId);
   const itemId = dataStore.totalItems;
-  const categoryId = dataStore.totalCategories;
-  const foundCategory = dataStore.categories.some((a) => a.name === category);
-  if (!foundCategory) {
-    dataStore.categories.push({ categoryId, category, custom: [] });
-  }
   user.userItems.push({ itemId, rating });
   dataStore.totalItems += 1;
-  dataStore.totalCategories += 1;
-  dataStore.items.push({ itemId, categoryId, itemName, custom: [] });
+  dataStore.items.push({ itemId, categoryName, itemName, custom: [] });
   save();
   res.json({ itemId });
+});
+
+app.post('/category', (req, res) => {
+  const { name } = req.body;
+  const foundCategory = dataStore.categories.some(
+    (a) => a.category === category
+  );
+  if (!foundCategory) {
+    dataStore.categories.push({ name, custom: [] });
+  }
+  save();
+  res.json({ name });
 });
 
 app.get('/item/:uId', (req, res) => {
@@ -158,21 +163,26 @@ app.get('/item/:uId', (req, res) => {
 
   res.json(combined);
 });
-/*
-app.get('/test/:uId', (req, res) => {
-  dataStore.categories.map((a) => {
-    dataStore.users.filter((item) => item.itemIds.includes(a.categoryId))
-  
-  }
-  res.json();
+
+// for each category, go through each item
+app.get('/get/categories', (req, res) => {
+  console.log('hi');
+  const associatedCategories = dataStore.categories.map((category) => {
+    console.log(category);
+    const item = dataStore.items.find(
+      (item) => item.categoryName === category.name
+    );
+    console.log(item);
+    return { category, item };
+  });
+  res.json(associatedCategories);
 });
-*/
+
 app.delete('/clear', (req, res) => {
   dataStore = {
     users: [],
     items: [],
     categories: [],
-    totalCategories: 0,
     totalUsers: 0,
     totalItems: 0,
   };

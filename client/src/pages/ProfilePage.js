@@ -16,9 +16,7 @@ function ProfilePage() {
   return (
     <div>
       {identiFunners.map((item) => (
-        <div>
-          {item.category}, {item.itemName}, {item.custom}
-        </div>
+        <div>{item.category}</div>
       ))}
       ProfilePage
     </div>
