@@ -1,6 +1,9 @@
 import express, { response } from 'express';
 import cors from 'cors';
 import fs from 'fs';
+import userRoutes from './routes/userRoutes';
+import itemRoutes from './routes/itemRoutes';
+import categoryRoutes from './routes/categoryRoutes';
 
 const app = express();
 const port = 8000;
@@ -56,9 +59,9 @@ app.get('/', (req, res) => {
   res.send({ message: 'Hello' });
 });
 
-app.post('/user/register', (req, res) => {
-  const { email, username, password } = req.body;
-});
+app.use('/users', userRoutes);
+app.use('/items', itemRoutes);
+app.use('/categories', categoryRoutes);
 
 /**
  * GET /demo
@@ -112,26 +115,6 @@ app.delete('/demo/:id', (req, res) => {
   );
   save();
   res.json({});
-});
-
-app.post('/item', (req, res) => {
-  const { category, itemName, rating, uId } = req.body;
-  const user = dataStore.users.find((user) => user.uId === uId);
-  const itemId = dataStore.totalItems;
-  user.userItems.push({ itemId, rating });
-  dataStore.totalItems += 1;
-  dataStore.items.push({ itemId, category, itemName, custom: [] });
-  save();
-  res.json({ itemId });
-});
-
-app.get('/item/:uId', (req, res) => {
-  const uId = parseInt(req.params.uId);
-  const user = dataStore.users.find((a) => a.uId === uId);
-  const allItems = user.userItems.map((item) =>
-    dataStore.items.find((a) => a.itemId === item.itemId)
-  );
-  res.json(allItems);
 });
 
 app.delete('/clear', (req, res) => {
