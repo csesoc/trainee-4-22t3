@@ -37,7 +37,7 @@ fs.readFile('./data.json', (err, data) => {
 /**
  * Saves the dataStore to the JSON
  */
-const save = () => {
+export const save = () => {
   fs.writeFile('./data.json', JSON.stringify(dataStore), (err) => {
     if (err) {
       console.log(err);
@@ -69,6 +69,7 @@ app.use('/categories', categoryRoutes);
  * @returns An array of identiFunners bruh idk how to do documentation :/
  * DO NOT UNDER ANY CIRCUMSTANCES MODEL THIS FOR YOUR 1531 YOUR MARK WILL SINK
  */
+/*
 app.get('/demo', (req, res) => {
   res.json(sampleDataStore.identiFunners);
 });
@@ -81,6 +82,7 @@ app.get('/demo', (req, res) => {
  * @param The rating of the item
  * @returns The userID
  */
+/*
 app.post('/demo', (req, res) => {
   // Get data from JSON body
   const { category, categoryItem, rating } = req.body;
@@ -116,7 +118,7 @@ app.delete('/demo/:id', (req, res) => {
   save();
   res.json({});
 });
-
+*/
 app.delete('/clear', (req, res) => {
   dataStore = {
     users: [],
@@ -126,28 +128,6 @@ app.delete('/clear', (req, res) => {
   };
   save();
   res.json({});
-});
-
-app.post('/register', (req, res) => {
-  const { email, password, username } = req.body;
-  const foundEmail = dataStore.users.some((user) => user.email === email);
-  if (foundEmail) {
-    res.status(696).json({ error: 'Email is already in use' });
-    return;
-  }
-
-  const foundUsername = dataStore.users.some(
-    (user) => user.username === username
-  );
-  if (foundUsername) {
-    res.status(696).json({ error: 'Email is already in use' });
-    return;
-  }
-  const uId = dataStore.totalUsers;
-  dataStore.users.push({ email, password, username, uId, userItems: [] });
-  dataStore.totalUsers += 1;
-  save();
-  res.json({ uId });
 });
 
 app.listen(port, () => {
