@@ -1,11 +1,12 @@
 import express from 'express';
-const router = express.Router();
 import {
   addItem,
   deleteItem,
   updateItem,
   getItem,
 } from '../controllers/itemController.js';
+
+const router = express.Router();
 
 router.post('/add', addItem);
 router.delete('/delete/:id', deleteItem);
