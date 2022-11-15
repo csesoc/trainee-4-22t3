@@ -4,6 +4,8 @@ import userRoutes from './routes/userRoutes.js';
 import itemRoutes from './routes/itemRoutes.js';
 import categoryRoutes from './routes/categoryRoutes.js';
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const mongoURI = 'REDACTED';
 
@@ -16,7 +18,7 @@ app.use('/users', userRoutes);
 app.use('/items', itemRoutes);
 app.use('/categories', categoryRoutes);
 
-mongoose.connect(mongoURI).then(() => {
+mongoose.connect(process.env.MONGO_URI).then(() => {
   app.listen(port, () => {
     console.log(`Server listening at port ${port} 🚀`);
   });
