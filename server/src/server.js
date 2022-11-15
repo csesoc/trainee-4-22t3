@@ -4,6 +4,7 @@ import userRoutes from './routes/userRoutes.js';
 import itemRoutes from './routes/itemRoutes.js';
 import categoryRoutes from './routes/categoryRoutes.js';
 import mongoose from 'mongoose';
+import chalk from 'chalk';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -17,7 +18,8 @@ app.use('/items', itemRoutes);
 app.use('/categories', categoryRoutes);
 
 mongoose.connect(process.env.MONGO_URI).then(() => {
+  console.log(chalk.cyan('Connected to MongoDB 🍃'));
   app.listen(port, () => {
-    console.log(`Server listening at port ${port} 🚀`);
+    console.log(chalk.cyan(`Server listening at port ${port} 🚀`));
   });
 });
