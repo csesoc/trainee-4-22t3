@@ -1,12 +1,15 @@
 import User from '../models/userModel.js';
+import bcrypt from 'bcrypt';
 
 const registerUser = async (req, res) => {
   const { username, email, password } = req.body;
-  // TODO: Hash password (maybe using bcrypt)
+
+  const saltRounds = 10;
+  const passwordHash = await bcrypt.hash(password, saltRounds);
   const user = await User.create({
     username,
     email,
-    password,
+    password: passwordHash,
   });
   // TODO: Create a token (perhaps use JWT tokens)
   const token = 'epic token';
@@ -24,8 +27,8 @@ const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
-  if (user && password === user.password) {
-    const token = 'epic';
+  if (user && (await bcrypt.compare(password, user.password))) {
+    const token = 'epic token';
     res.json({
       uId: user._id,
       username: user.username,
