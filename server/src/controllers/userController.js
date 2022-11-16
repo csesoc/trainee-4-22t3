@@ -1,5 +1,6 @@
 import User from '../models/userModel.js';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 const registerUser = async (req, res) => {
   const { username, email, password } = req.body;
@@ -11,15 +12,13 @@ const registerUser = async (req, res) => {
     email,
     password: passwordHash,
   });
-  // TODO: Create a token (perhaps use JWT tokens)
-  const token = 'epic token';
 
   res.json({
     uId: user._id,
     username: user.username,
     email: user.email,
     password: user.password,
-    token: token,
+    token: generateToken(user._id),
   });
 };
 
@@ -28,17 +27,20 @@ const loginUser = async (req, res) => {
 
   const user = await User.findOne({ email });
   if (user && (await bcrypt.compare(password, user.password))) {
-    const token = 'epic token';
     res.json({
       uId: user._id,
       username: user.username,
       email: user.email,
       password: user.password,
-      token: token,
+      token: generateToken(user._id),
     });
   } else {
     res.status(400).json({ error: 'bruh' });
   }
+};
+
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 };
 
 export { registerUser, loginUser };
