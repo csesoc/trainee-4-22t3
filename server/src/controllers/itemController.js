@@ -1,3 +1,9 @@
+const addItem = (req, res) => {};
+
+const deleteItem = (req, res) => {};
+
+const updateItem = (req, res) => {};
+
 const getItem = (req, res) => {
   const user = dataStore.users.find((a) => a.uId === uId);
   const allItems = user.userItems.map((item) =>
@@ -6,6 +12,4 @@ const getItem = (req, res) => {
   res.json(allItems);
 };
 
-export default {
-  getItem,
-};
+export { addItem, updateItem, deleteItem, getItem };
