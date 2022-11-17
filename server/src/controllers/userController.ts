@@ -1,8 +1,10 @@
-import User from '../models/userModel.js';
+import { Request, Response } from 'express';
+import User from '../models/userModel';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { Types } from 'mongoose';
 
-const registerUser = async (req, res) => {
+const registerUser = async (req: Request, res: Response) => {
   const { username, email, password } = req.body;
 
   const saltRounds = 10;
@@ -22,7 +24,7 @@ const registerUser = async (req, res) => {
   });
 };
 
-const loginUser = async (req, res) => {
+const loginUser = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
@@ -39,8 +41,10 @@ const loginUser = async (req, res) => {
   }
 };
 
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+const generateToken = (id: Types.ObjectId) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET as string, {
+    expiresIn: '1h',
+  });
 };
 
 export { registerUser, loginUser };
