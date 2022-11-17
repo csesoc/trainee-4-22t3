@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import User from '../models/userModel';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { Types } from 'mongoose';
 
 const registerUser = async (req: Request, res: Response) => {
   const { username, email, password } = req.body;
@@ -20,7 +19,7 @@ const registerUser = async (req: Request, res: Response) => {
     username: user.username,
     email: user.email,
     password: user.password,
-    token: generateToken(user._id),
+    token: generateToken(user._id.toString()),
   });
 };
 
@@ -34,14 +33,14 @@ const loginUser = async (req: Request, res: Response) => {
       username: user.username,
       email: user.email,
       password: user.password,
-      token: generateToken(user._id),
+      token: generateToken(user._id.toString()),
     });
   } else {
     res.status(400).json({ error: 'bruh' });
   }
 };
 
-const generateToken = (id: Types.ObjectId) => {
+const generateToken = (id: string) => {
   return jwt.sign({ id }, process.env.JWT_SECRET as string, {
     expiresIn: '1h',
   });
