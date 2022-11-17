@@ -2,9 +2,11 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "src/server.ts",
+  "main": "dist/server.js",
   "scripts": {
-    "start": "nodemon src/server.ts",
+    "start": "node .",
+    "tsc": "tsc",
+    "dev": "nodemon src/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

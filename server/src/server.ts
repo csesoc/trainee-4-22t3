@@ -1,4 +1,4 @@
-import express, { Application } from 'express';
+import express from 'express';
 import cors from 'cors';
 import userRoutes from './routes/userRoutes';
 import itemRoutes from './routes/itemRoutes';
@@ -8,7 +8,7 @@ import chalk from 'chalk';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-const app: Application = express();
+const app = express();
 const port = process.env.PORT || 8000;
 
 app.use(express.json());
