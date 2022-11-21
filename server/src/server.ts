@@ -1,11 +1,11 @@
 import express from 'express';
 import cors from 'cors';
-import userRoutes from './routes/userRoutes.js';
-import itemRoutes from './routes/itemRoutes.js';
-import categoryRoutes from './routes/categoryRoutes.js';
+import userRoutes from './routes/userRoutes';
+import itemRoutes from './routes/itemRoutes';
+import categoryRoutes from './routes/categoryRoutes';
 import mongoose from 'mongoose';
 import chalk from 'chalk';
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 dotenv.config();
 
 const app = express();
@@ -17,7 +17,7 @@ app.use('/users', userRoutes);
 app.use('/items', itemRoutes);
 app.use('/categories', categoryRoutes);
 
-mongoose.connect(process.env.MONGO_URI).then(() => {
+mongoose.connect(process.env.MONGO_URI as string).then(() => {
   console.log(chalk.cyan('Connected to MongoDB 🍃'));
   app.listen(port, () => {
     console.log(chalk.cyan(`Server listening at port ${port} 🚀`));
