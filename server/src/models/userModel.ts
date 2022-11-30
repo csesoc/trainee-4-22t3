@@ -1,4 +1,6 @@
 import { Schema, model } from 'mongoose';
+import { PopulatedDoc } from 'mongoose';
+import { IMusic } from './musicModel';
 
 interface IUser {
   email: string;

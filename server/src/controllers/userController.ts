@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import User from '../models/userModel';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { rejects } from 'assert';
 
 const registerUser = async (req: Request, res: Response) => {
   const { username, email, password } = req.body;
@@ -46,4 +47,36 @@ const generateToken = (id: string) => {
   });
 };
 
-export { registerUser, loginUser };
+interface JwtPayload {
+  id: string;
+}
+
+function fetchUserByToken(req: Request) {
+  return new Promise((resolve, reject) => {
+    if (req.header && req.header('token')) {
+      let authorization = req.header('token') as string;
+      let decoded;
+      try {
+        decoded = jwt.verify(
+          authorization,
+          process.env.JWT_SECRET as string
+        ) as JwtPayload;
+      } catch (err) {
+        reject('Token is invalid');
+        return;
+      }
+      let uId = decoded.id;
+      User.findOne({ uId })
+        .then((user) => {
+          resolve(user);
+        })
+        .catch((err) => {
+          reject('sus');
+        });
+    } else {
+      reject('No token found');
+    }
+  });
+}
+
+export { registerUser, loginUser, fetchUserByToken };
