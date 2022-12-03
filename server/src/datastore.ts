@@ -19,8 +19,6 @@ interface Item {
   itemID: number;
   name: string;
   comment: string;
-  rating: number; // rating out of 5
-  //   customImage: boolean;
   imageUrl: string;
 }
 

@@ -3,14 +3,16 @@ import {
   addItem,
   deleteItem,
   updateItem,
-  getItem,
+  getItems,
 } from '../controllers/itemController';
+
+import { authenticateToken } from '../controllers/userController';
 
 const router = express.Router();
 
-router.post('/add', addItem);
-router.delete('/delete/:id', deleteItem);
-router.put('/update/:id', updateItem);
-router.get('/get/:id', getItem);
+router.post('/add', authenticateToken, addItem);
+router.delete('/delete/:id', authenticateToken, deleteItem);
+router.put('/update/:id', authenticateToken, updateItem);
+router.get('/get/', authenticateToken, getItems);
 
 export default router;
