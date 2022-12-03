@@ -47,36 +47,27 @@ const generateToken = (id: string) => {
   });
 };
 
-interface JwtPayload {
-  id: string;
-}
+function authenticateToken(req: Request, res: Response, next: any) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
 
-function fetchUserByToken(req: Request) {
-  return new Promise((resolve, reject) => {
-    if (req.header && req.header('token')) {
-      let authorization = req.header('token') as string;
-      let decoded;
-      try {
-        decoded = jwt.verify(
-          authorization,
-          process.env.JWT_SECRET as string
-        ) as JwtPayload;
-      } catch (err) {
-        reject('Token is invalid');
-        return;
+  if (token == null) return res.sendStatus(401);
+
+  jwt.verify(
+    token,
+    process.env.JWT_SECRET as string,
+    async (err: any, uId: any) => {
+      if (err) return res.sendStatus(403).json(err);
+      const user = await User.findById(uId.id);
+      console.log(user);
+      if (user) {
+        Object.assign(req, { user });
+      } else {
+        res.sendStatus(400).json({ error: 'User not found' });
       }
-      let uId = decoded.id;
-      User.findOne({ uId })
-        .then((user) => {
-          resolve(user);
-        })
-        .catch((err) => {
-          reject('sus');
-        });
-    } else {
-      reject('No token found');
+      next();
     }
-  });
+  );
 }
 
-export { registerUser, loginUser, fetchUserByToken };
+export { registerUser, loginUser, authenticateToken };

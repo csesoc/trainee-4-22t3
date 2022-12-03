@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import userRoutes from './routes/userRoutes';
+import { User } from './models/interfaces';
 import itemRoutes from './routes/itemRoutes';
 import categoryRoutes from './routes/categoryRoutes';
 import mongoose from 'mongoose';
@@ -10,6 +11,14 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 8000;
+
+declare global {
+  namespace Express {
+    interface Request {
+      user?: User;
+    }
+  }
+}
 
 app.use(express.json());
 app.use(cors());
