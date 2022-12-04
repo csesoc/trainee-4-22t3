@@ -1,12 +1,13 @@
 import express from 'express';
 import cors from 'cors';
-import userRoutes from './routes/userRoutes';
-import { User } from './models/interfaces';
-import itemRoutes from './routes/itemRoutes';
-import categoryRoutes from './routes/categoryRoutes';
 import mongoose from 'mongoose';
 import chalk from 'chalk';
 import * as dotenv from 'dotenv';
+import userRoutes from './routes/userRoutes';
+import itemRoutes from './routes/itemRoutes';
+import categoryRoutes from './routes/categoryRoutes';
+import { User } from './models/interfaces';
+
 dotenv.config();
 
 const app = express();

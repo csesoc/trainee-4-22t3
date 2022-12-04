@@ -2,8 +2,6 @@ import { Request, Response } from 'express';
 import Item from '../models/itemModel';
 import { Items, IItem } from '../models/interfaces';
 
-// userSchema.add({education: String, age: Number, profile_pic: String});
-
 const addItem = async (req: Request, res: Response) => {
   const { name, comment, category, released, imageUrl, rating, extraFields } =
     req.body;
@@ -17,7 +15,7 @@ const addItem = async (req: Request, res: Response) => {
       rating,
       released,
       imageUrl,
-      extraFields,
+      extraFields: extraFields ? extraFields : [],
     });
     if (item) {
       res.status(200).json(item);

@@ -6,7 +6,7 @@ import {
   getItems,
 } from '../controllers/itemController';
 
-import { authenticateToken } from '../controllers/userController';
+import { authenticateToken } from '../middleware/authMiddleware';
 
 const router = express.Router();
 
