@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import Item from '../models/itemModel';
-import { Items, IItem } from '../models/interfaces';
+import User from '../models/userModel';
+import { Items, IItem, User as UserType } from '../models/interfaces';
+import { Schema } from 'mongoose';
 
 // userSchema.add({education: String, age: Number, profile_pic: String});
 
@@ -68,6 +70,7 @@ interface SortedItem {
 const getItems = async (req: Request, res: Response) => {
   const user = req.user;
   if (user) {
+    console.log(user._id);
     const allItems = await Item.find({ uId: user._id });
     if (allItems) {
       const sorted = {} as SortedItem;
@@ -97,4 +100,43 @@ const getItems = async (req: Request, res: Response) => {
     }
   }
 };
-export { addItem, updateItem, deleteItem, getItems };
+
+interface HomepageItem {
+  [key: string]: SortedItem;
+}
+
+const getHomepageItems = async (req: Request, res: Response) => {
+  User.aggregate([
+    {$sample: {size: 3}}
+  ], async function(err, users) {
+    const userIds: Schema.Types.ObjectId[] = users.map(user => user._id);
+    
+    const homepageItems: HomepageItem = {};
+    for (const uId of userIds) {
+      const allItems = await Item.find({ uId: uId });
+      const sorted = {} as SortedItem;
+      allItems.forEach((item: IItem) => {
+        let categoryName = item.category;
+        if (!(categoryName in sorted)) {
+          sorted[categoryName] = [];
+        }
+        sorted[categoryName].push({
+          name: item.name,
+          comment: item.comment,
+          rating: item.rating,
+          released: item.released,
+          imageUrl: item.imageUrl,
+          extraFields: item.extraFields,
+        });
+      });
+      Object.keys(sorted).forEach((key) =>
+        sorted[key].sort((a, b) => b.rating - a.rating)
+      );
+      
+      homepageItems[uId.toString()] = sorted;
+    }
+    res.status(200).json(homepageItems);
+  });
+};
+
+export { addItem, updateItem, deleteItem, getItems, getHomepageItems };
