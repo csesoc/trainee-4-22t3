@@ -29,6 +29,10 @@ const getItems = async (req: Request, res: Response) => {
       imageUrl: item.imageUrl,
       extraFields: item.extraFields,
     });
+    // Sorts items of each category by rating
+    Object.keys(categoryItems).forEach((key) =>
+      categoryItems[key].sort((a, b) => b.rating - a.rating)
+    );
   });
   res.json(categoryItems);
 };
