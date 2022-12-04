@@ -15,14 +15,18 @@ function authenticateToken(req: Request, res: Response, next: any) {
     token,
     process.env.JWT_SECRET as string,
     async (err: any, decoded: any) => {
-      if (err) return res.sendStatus(403).json(err);
-      const user = await User.findById(decoded.id);
-      if (user) {
-        req.user = user;
-        // Object.assign(req, { user });
-      } else {
-        res.sendStatus(400).json({ error: 'User not found' });
+      if (err) {
+        res.status(403).json({ error: 'Invalid token' });
+        return;
       }
+
+      const user = await User.findById(decoded.id);
+      if (!user) {
+        res.status(400).json({ error: 'Invalid id' });
+        return;
+      }
+      req.user = user;
+
       next();
     }
   );
