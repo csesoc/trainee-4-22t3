@@ -131,7 +131,6 @@ const groupUserItems = async (user: UserType) => {
   Object.keys(categoryItems).forEach((key) =>
     categoryItems[key].sort((a, b) => b.rating - a.rating)
   );
-  console.log(categoryItems);
   return categoryItems;
 };
 
