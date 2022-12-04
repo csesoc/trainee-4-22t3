@@ -136,42 +136,6 @@ const getHomepageItems = async (req: Request, res: Response) => {
     });
   }
   res.status(200).json(homepageItems);
-
-
-
-  /*
-  User.aggregate([
-    {$sample: {size: 3}}
-  ], async function(err, users) {
-    const userIds: Schema.Types.ObjectId[] = users.map(user => user._id);
-    
-    const homepageItems: SortedItem[] = [];
-    for (const uId of userIds) {
-      const allItems = await Item.find({ uId: uId });
-      const sorted = {} as SortedItem;
-      allItems.forEach((item: IItem) => {
-        let categoryName = item.category;
-        if (!(categoryName in sorted)) {
-          sorted[categoryName] = [];
-        }
-        sorted[categoryName].push({
-          name: item.name,
-          comment: item.comment,
-          rating: item.rating,
-          released: item.released,
-          imageUrl: item.imageUrl,
-          extraFields: item.extraFields,
-        });
-      });
-      Object.keys(sorted).forEach((key) =>
-        sorted[key].sort((a, b) => b.rating - a.rating)
-      );
-      
-      homepageItems.push(sorted);
-    }
-    res.status(200).json(homepageItems);
-  });
-  */
 };
 
 export { addItem, updateItem, deleteItem, getItems, getHomepageItems };
