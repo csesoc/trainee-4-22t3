@@ -1,42 +1,28 @@
 import { Request, Response } from 'express';
 import Item from '../models/itemModel';
-import { Items, IItem } from '../models/interfaces';
+import User from '../models/userModel';
+import { Items, IItem, User as UserType } from '../models/interfaces';
 
 interface CategoryItems {
   [key: string]: Array<Items>;
 }
 
+/**
+ * @desc    Gets all items belonging to authorized user
+ * @routes  GET /items/get
+ */
 const getItems = async (req: Request, res: Response) => {
   if (!req.user) {
     res.status(401).json({ error: 'Not authenticated' });
     return;
   }
-
-  const allItems = await Item.find({ uId: req.user._id });
-  const categoryItems: CategoryItems = {};
-  allItems.forEach((item: IItem) => {
-    let categoryName = item.category;
-    // Adds category if it doesn't exist already
-    if (!(categoryName in categoryItems)) {
-      categoryItems[categoryName] = [];
-    }
-    // Adds item
-    categoryItems[categoryName].push({
-      name: item.name,
-      comment: item.comment,
-      rating: item.rating,
-      released: item.released,
-      imageUrl: item.imageUrl,
-      extraFields: item.extraFields,
-    });
-    // Sorts items of each category by rating
-    Object.keys(categoryItems).forEach((key) =>
-      categoryItems[key].sort((a, b) => b.rating - a.rating)
-    );
-  });
-  res.json(categoryItems);
+  res.status(200).json(await groupUserItems(req.user));
 };
 
+/**
+ * @desc    Adds a user-created item
+ * @route   POST /items/add
+ */
 const addItem = async (req: Request, res: Response) => {
   const { name, comment, category, released, imageUrl, rating, extraFields } =
     req.body;
@@ -57,7 +43,12 @@ const addItem = async (req: Request, res: Response) => {
   res.status(200).json(item);
 };
 
-// TODO: Actually test these routes lol
+// TODO: Actually test update and delete routes lol
+
+/**
+ * @desc    Deletes a user-created item
+ * @route   DELETE items/delete/:id
+ */
 const deleteItem = async (req: Request, res: Response) => {
   const user = req.user;
   const itemId = req.params.id;
@@ -74,6 +65,10 @@ const deleteItem = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @desc    Updates a user-created item
+ * @route   PUT items/update/:id
+ */
 const updateItem = async (req: Request, res: Response) => {
   const user = req.user;
   const itemId = req.params.id;
@@ -92,4 +87,52 @@ const updateItem = async (req: Request, res: Response) => {
   }
 };
 
-export { addItem, updateItem, deleteItem, getItems };
+/*
+ * @desc    Gets the items of 3 random users to display on the homepage
+ * @route   GET /homepage/get
+ */
+const getHomepageItems = async (req: Request, res: Response) => {
+  const users = await User.aggregate([{ $sample: { size: 3 } }]);
+  const homepageItems = [];
+
+  for (const user of users) {
+    homepageItems.push({
+      user: { username: user.username },
+      items: await groupUserItems(user),
+    });
+  }
+
+  res.status(200).json(homepageItems);
+};
+
+/*
+ * Groups all of a user's items by category
+ */
+const groupUserItems = async (user: UserType) => {
+  const allItems = await Item.find({ uId: user._id });
+  const categoryItems: CategoryItems = {};
+  allItems.forEach((item: IItem) => {
+    let categoryName = item.category;
+    // Adds category if it doesn't exist already
+    if (!(categoryName in categoryItems)) {
+      categoryItems[categoryName] = [];
+    }
+    // Adds item
+    categoryItems[categoryName].push({
+      name: item.name,
+      comment: item.comment,
+      rating: item.rating,
+      released: item.released,
+      imageUrl: item.imageUrl,
+      extraFields: item.extraFields,
+    });
+  });
+  // Sorts items of each category by rating
+  Object.keys(categoryItems).forEach((key) =>
+    categoryItems[key].sort((a, b) => b.rating - a.rating)
+  );
+  console.log(categoryItems);
+  return categoryItems;
+};
+
+export { addItem, updateItem, deleteItem, getItems, getHomepageItems };

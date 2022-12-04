@@ -3,6 +3,10 @@ import User from '../models/userModel';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
+/**
+ * @desc    Registers a new user, generating and returning a token
+ * @routes  POST /users/register
+ */
 const registerUser = async (req: Request, res: Response) => {
   const { username, email, password } = req.body;
 
@@ -23,6 +27,10 @@ const registerUser = async (req: Request, res: Response) => {
   });
 };
 
+/**
+ * @desc    Logs a user in, generating and returning a token
+ * @routes  POST /users/login
+ */
 const loginUser = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
@@ -40,6 +48,9 @@ const loginUser = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @desc  Generate a JWT token encoding the user ID
+ */
 const generateToken = (id: string) => {
   return jwt.sign({ id }, process.env.JWT_SECRET as string, {
     expiresIn: '1h',
