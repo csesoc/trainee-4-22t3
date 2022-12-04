@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import User from '../models/userModel';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { rejects } from 'assert';
 
 const registerUser = async (req: Request, res: Response) => {
   const { username, email, password } = req.body;
@@ -46,4 +47,27 @@ const generateToken = (id: string) => {
   });
 };
 
-export { registerUser, loginUser };
+function authenticateToken(req: Request, res: Response, next: any) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (token == null) return res.sendStatus(401);
+
+  jwt.verify(
+    token,
+    process.env.JWT_SECRET as string,
+    async (err: any, uId: any) => {
+      if (err) return res.sendStatus(403).json(err);
+      const user = await User.findById(uId.id);
+      console.log(user);
+      if (user) {
+        Object.assign(req, { user });
+      } else {
+        res.sendStatus(400).json({ error: 'User not found' });
+      }
+      next();
+    }
+  );
+}
+
+export { registerUser, loginUser, authenticateToken };

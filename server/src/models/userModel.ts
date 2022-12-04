@@ -1,10 +1,6 @@
 import { Schema, model } from 'mongoose';
-
-interface IUser {
-  email: string;
-  username: string;
-  password: string;
-}
+import { PopulatedDoc } from 'mongoose';
+import { IUser } from './interfaces';
 
 const userSchema = new Schema<IUser>({
   email: String,

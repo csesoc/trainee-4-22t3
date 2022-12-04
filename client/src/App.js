@@ -5,8 +5,10 @@ import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import Demo from './pages/Demo';
 import ProfilePage from './pages/ProfilePage';
+
 function App() {
   const [user, setUser] = useState();
+
   return (
     <BrowserRouter>
       <Routes>
