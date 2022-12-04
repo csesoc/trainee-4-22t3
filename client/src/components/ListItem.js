@@ -1,5 +1,6 @@
 import { FaWindowClose, FaStar } from 'react-icons/fa';
-function ListItem() {
+function ListItem({ item }) {
+  console.log(item);
   return (
     <li class="btn-fav" title="Shingeki no Kyojin">
       <a

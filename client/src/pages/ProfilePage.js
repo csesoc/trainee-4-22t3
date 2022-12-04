@@ -3,6 +3,23 @@ import axios from 'axios';
 import TestItem from '../components/TestItem';
 
 function ProfilePage({ user }) {
+  console.log(user);
+  const [identiFunners, setIdentiFunners] = useState({});
+  const [success, setSuccess] = useState(false);
+  // Makes a request to the server when component mounts + when success state is set
+  useEffect(() => {
+    axios
+      .get('http://localhost:5000/items/get', {
+        headers: {
+          Authorization: 'Bearer ' + user.token,
+        },
+      })
+      .then((response) => setIdentiFunners(response.data))
+      .catch((err) => {
+        console.log(err);
+      });
+    return () => setSuccess(false);
+  }, [success]);
   return (
     <section className="h-screen">
       <nav class="bg-white border-gray-200 px-2 sm:px-4 py-2.5 dark:bg-gray-900">
@@ -98,12 +115,13 @@ function ProfilePage({ user }) {
         </div>
       </nav>
       <div className="grid md:grid-cols-2 lg:grid-cols-2">
-        <TestItem />
-        <TestItem />
-        <TestItem />
-        <TestItem />
-        <TestItem />
-        <TestItem />
+        {Object.keys(identiFunners).map((category) => (
+          <TestItem
+            category={category}
+            items={identiFunners[category]}
+            setSuccess={setSuccess}
+          />
+        ))}
       </div>
       <footer class="p-4 bg-white shadow md:px-6 md:py-8 dark:bg-gray-900">
         <span class="block text-sm text-gray-500 sm:text-center dark:text-gray-400">

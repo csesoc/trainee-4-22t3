@@ -1,46 +1,65 @@
 import { useState, useEffect } from 'react';
+import { redirect, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-function LoginPage() {
+function LoginPage({ setUser }) {
   const [success, setSuccess] = useState(false);
-  const [form, setForm] = useState(false);
-
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
   /*  // Makes a request to the server when component mounts + when success state is set
   useEffect(() => {
 
     axios
-      .get('http://localhost:8000/demo')
+      .get('http://localhost:5000/users/login')
       .then((response) => setIdentiFunners(response.data));
     // .then(setSuccess(false));
     return () => setSuccess(false);
   }, [success]);
   */
-  const handleSubmit = () => {};
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    axios
+      .post('http://localhost:5000/users/login', {
+        email,
+        password,
+      })
+      .then((response) => {
+        setUser(response.data);
+        console.log(response.data);
+        localStorage.setItem('user', JSON.stringify(response.data));
+        navigate('/profile/');
+      })
+      .catch((error) => {
+        alert('Email/password did not link to an associated account');
+        console.log(error);
+      });
+  };
   return (
     <section className="h-screen">
-      <nav class="bg-white border-gray-200 px-2 sm:px-4 py-2.5 dark:bg-gray-900">
-        <div class="container flex flex-wrap justify-between items-center mx-auto">
+      <nav className="bg-white border-gray-200 px-2 sm:px-4 py-2.5 dark:bg-gray-900">
+        <div className="container flex flex-wrap justify-between items-center mx-auto">
           <form>
             <label
-              for="default-search"
-              class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300"
+              htmlFor="default-search"
+              className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300"
             >
               Search
             </label>
-            <div class="relative">
-              <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+            <div className="relative">
+              <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
                 <svg
                   aria-hidden="true"
-                  class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                  className="w-5 h-5 text-gray-500 dark:text-gray-400"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                   ></path>
                 </svg>
@@ -48,53 +67,53 @@ function LoginPage() {
               <input
                 type="search"
                 id="default-search"
-                class="block p-4 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                className="block p-4 pl-10 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Search Mockups, Logos..."
                 required
               />
               <button
                 type="submit"
-                class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
                 Search
               </button>
             </div>
           </form>
-          <a href="https://flowbite.com/" class="flex items-center">
+          <a href="https://flowbite.com/" className="flex items-center">
             <img
               src="https://i.imgur.com/ylqbx7Y.png"
-              class="mr-3 h-6 sm:h-9"
+              className="mr-3 h-6 sm:h-9"
               style={{ width: '100px', height: '100px' }}
               alt="identiFun logo"
             />
-            <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
+            <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
               identiFun
             </span>
           </a>
           <button
             data-collapse-toggle="navbar-default"
             type="button"
-            class="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+            className="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
             aria-controls="navbar-default"
             aria-expanded="false"
           >
-            <span class="sr-only">Open main menu</span>
+            <span className="sr-only">Open main menu</span>
             <svg
-              class="w-6 h-6"
+              className="w-6 h-6"
               aria-hidden="true"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                fill-rule="evenodd"
+                fillRule="evenodd"
                 d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                clip-rule="evenodd"
+                clipRule="evenodd"
               ></path>
             </svg>
           </button>
           <a
-            class="dropdown-toggle flex items-center hidden-arrow"
+            className="dropdown-toggle flex items-center hidden-arrow"
             href="/"
             id="dropdownMenuButton2"
             role="button"
@@ -103,7 +122,7 @@ function LoginPage() {
           >
             <img
               src="https://mdbootstrap.com/img/new/avatars/2.jpg"
-              class="rounded-full"
+              className="rounded-full"
               style={{ height: '50px', width: '50px' }}
               alt=""
               loading="lazy"
@@ -127,6 +146,8 @@ function LoginPage() {
                   type="text"
                   className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                   placeholder="Email address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
 
@@ -135,6 +156,8 @@ function LoginPage() {
                   type="password"
                   className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                   placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
 
@@ -159,10 +182,10 @@ function LoginPage() {
           </div>
         </div>
       </div>
-      <footer class="p-4 bg-white shadow md:px-6 md:py-8 dark:bg-gray-900">
-        <span class="block text-sm text-gray-500 sm:text-center dark:text-gray-400">
+      <footer className="p-4 bg-white shadow md:px-6 md:py-8 dark:bg-gray-900">
+        <span className="block text-sm text-gray-500 sm:text-center dark:text-gray-400">
           © 2022{' '}
-          <a href="https://flowbite.com/" class="hover:underline">
+          <a href="https://flowbite.com/" className="hover:underline">
             identiFun™
           </a>
           . All Rights Reserved.

@@ -7,7 +7,7 @@ import Demo from './pages/Demo';
 import ProfilePage from './pages/ProfilePage';
 
 function App() {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
 
   return (
     <BrowserRouter>

@@ -19,7 +19,6 @@ const registerUser = async (req: Request, res: Response) => {
     uId: user._id,
     username: user.username,
     email: user.email,
-    password: user.password,
     token: generateToken(user._id.toString()),
   });
 };
@@ -33,7 +32,6 @@ const loginUser = async (req: Request, res: Response) => {
       uId: user._id,
       username: user.username,
       email: user.email,
-      password: user.password,
       token: generateToken(user._id.toString()),
     });
   } else {
