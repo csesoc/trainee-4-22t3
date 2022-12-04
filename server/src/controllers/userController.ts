@@ -2,8 +2,11 @@ import { Request, Response } from 'express';
 import User from '../models/userModel';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { rejects } from 'assert';
 
+/**
+ * @desc    Registers a new user, generating and returning a token
+ * @routes  POST /users/register
+ */
 const registerUser = async (req: Request, res: Response) => {
   const { username, email, password } = req.body;
 
@@ -24,6 +27,10 @@ const registerUser = async (req: Request, res: Response) => {
   });
 };
 
+/**
+ * @desc    Logs a user in, generating and returning a token
+ * @routes  POST /users/login
+ */
 const loginUser = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
@@ -41,33 +48,13 @@ const loginUser = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @desc  Generate a JWT token encoding the user ID
+ */
 const generateToken = (id: string) => {
   return jwt.sign({ id }, process.env.JWT_SECRET as string, {
     expiresIn: '1h',
   });
 };
 
-function authenticateToken(req: Request, res: Response, next: any) {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-
-  if (token == null) return res.sendStatus(401);
-
-  jwt.verify(
-    token,
-    process.env.JWT_SECRET as string,
-    async (err: any, uId: any) => {
-      if (err) return res.sendStatus(403).json(err);
-      const user = await User.findById(uId.id);
-      console.log(user);
-      if (user) {
-        Object.assign(req, { user });
-      } else {
-        res.sendStatus(400).json({ error: 'User not found' });
-      }
-      next();
-    }
-  );
-}
-
-export { registerUser, loginUser, authenticateToken };
+export { registerUser, loginUser };
