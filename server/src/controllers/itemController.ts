@@ -101,17 +101,51 @@ const getItems = async (req: Request, res: Response) => {
   }
 };
 
-interface HomepageItem {
-  [key: string]: SortedItem;
-}
-
 const getHomepageItems = async (req: Request, res: Response) => {
+  const users = await User.aggregate([
+    {$sample: {size: 3}}
+  ]);
+
+  const homepageItems = [];
+  for (const user of users) {
+    const allItems = await Item.find({ uId: user._id });
+    const sorted = {} as SortedItem;
+    allItems.forEach((item: IItem) => {
+      let categoryName = item.category;
+      if (!(categoryName in sorted)) {
+        sorted[categoryName] = [];
+      }
+      sorted[categoryName].push({
+        name: item.name,
+        comment: item.comment,
+        rating: item.rating,
+        released: item.released,
+        imageUrl: item.imageUrl,
+        extraFields: item.extraFields,
+      });
+    });
+    Object.keys(sorted).forEach((key) =>
+      sorted[key].sort((a, b) => b.rating - a.rating)
+    );
+    
+    homepageItems.push({
+      user: {
+        username: user.username,
+      },
+      items: sorted
+    });
+  }
+  res.status(200).json(homepageItems);
+
+
+
+  /*
   User.aggregate([
     {$sample: {size: 3}}
   ], async function(err, users) {
     const userIds: Schema.Types.ObjectId[] = users.map(user => user._id);
     
-    const homepageItems: HomepageItem = {};
+    const homepageItems: SortedItem[] = [];
     for (const uId of userIds) {
       const allItems = await Item.find({ uId: uId });
       const sorted = {} as SortedItem;
@@ -133,10 +167,11 @@ const getHomepageItems = async (req: Request, res: Response) => {
         sorted[key].sort((a, b) => b.rating - a.rating)
       );
       
-      homepageItems[uId.toString()] = sorted;
+      homepageItems.push(sorted);
     }
     res.status(200).json(homepageItems);
   });
+  */
 };
 
 export { addItem, updateItem, deleteItem, getItems, getHomepageItems };
