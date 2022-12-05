@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import { rejects } from 'assert';
 
 const registerUser = async (req: Request, res: Response) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, profileImgUrl } = req.body;
 
   const saltRounds = 10;
   const passwordHash = await bcrypt.hash(password, saltRounds);
@@ -13,6 +13,7 @@ const registerUser = async (req: Request, res: Response) => {
     username,
     email,
     password: passwordHash,
+    profileImgUrl,
   });
 
   res.json({
@@ -32,6 +33,7 @@ const loginUser = async (req: Request, res: Response) => {
       uId: user._id,
       username: user.username,
       email: user.email,
+      profileImgUrl: user.profileImgUrl,
       token: generateToken(user._id.toString()),
     });
   } else {
@@ -57,7 +59,6 @@ function authenticateToken(req: Request, res: Response, next: any) {
     async (err: any, uId: any) => {
       if (err) return res.sendStatus(403).json(err);
       const user = await User.findById(uId.id);
-      console.log(user);
       if (user) {
         Object.assign(req, { user });
       } else {

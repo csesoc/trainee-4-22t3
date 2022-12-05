@@ -5,12 +5,14 @@ export interface User {
   email: string;
   username: string;
   password: string;
+  profileImgUrl: string;
 }
 
 export interface IUser {
   email: string;
   username: string;
   password: string;
+  profileImgUrl: string;
 }
 
 export interface IItem {
@@ -20,7 +22,9 @@ export interface IItem {
   comment: string;
   rating: number;
   imageUrl: string;
+  imageRef: string;
   released: number;
+  createdBy: string;
   extraFields?: {
     [key: string]: string;
   };
@@ -32,6 +36,8 @@ export interface Items {
   rating: number;
   released: number;
   imageUrl: string;
+  imageRef: string;
+  createdBy: string;
   extraFields?: {
     [key: string]: string | undefined;
   };

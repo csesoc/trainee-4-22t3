@@ -5,8 +5,17 @@ import { Items, IItem } from '../models/interfaces';
 // userSchema.add({education: String, age: Number, profile_pic: String});
 
 const addItem = async (req: Request, res: Response) => {
-  const { name, comment, category, released, imageUrl, rating, extraFields } =
-    req.body;
+  const {
+    name,
+    comment,
+    category,
+    released,
+    imageRef,
+    imageUrl,
+    rating,
+    createdBy,
+    extraFields,
+  } = req.body;
   const user = req.user;
   if (user) {
     const item = await Item.create({
@@ -16,8 +25,10 @@ const addItem = async (req: Request, res: Response) => {
       comment,
       rating,
       released,
+      imageRef,
       imageUrl,
       extraFields,
+      createdBy,
     });
     if (item) {
       res.status(200).json(item);
@@ -66,9 +77,14 @@ interface SortedItem {
 }
 
 const getItems = async (req: Request, res: Response) => {
-  const user = req.user;
-  if (user) {
-    const allItems = await Item.find({ uId: user._id });
+  let uId = null;
+  if (Object.keys(req.query).length !== 0) {
+    uId = req.query.uId;
+  } else if (req.user) {
+    uId = req.user._id;
+  }
+  if (uId) {
+    const allItems = await Item.find({ uId });
     if (allItems) {
       const sorted = {} as SortedItem;
       allItems.forEach((item: IItem) => {
@@ -83,7 +99,9 @@ const getItems = async (req: Request, res: Response) => {
           comment: item.comment,
           rating: item.rating,
           released: item.released,
+          imageRef: item.imageRef,
           imageUrl: item.imageUrl,
+          createdBy: item.createdBy,
           extraFields: item.extraFields,
         });
       });

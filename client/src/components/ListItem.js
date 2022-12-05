@@ -1,39 +1,43 @@
 import { FaWindowClose, FaStar } from 'react-icons/fa';
 function ListItem({ item }) {
-  console.log(item);
   return (
-    <li class="btn-fav" title="Shingeki no Kyojin">
-      <a
-        href="https://myanimelist.net/anime/16498/Shingeki_no_Kyojin"
-        class="link bg-center"
-      >
-        <span>Attack on Titan</span>
-        <img
-          src="https://cdn.myanimelist.net/r/140x220/images/anime/10/47347.webp?s=fa1924f02140fa3fda9ef6fcf1002c44"
-          className="w-auto h-auto b-0"
-          alt="Shingeki no Kyojin"
-        ></img>
-        <span className="text-xs">I love this TV Show</span>
-        <br></br>
-        <div className="grid gap-x-0 gap-y-4 lg:grid-cols-10  md:grid-cols-2 ">
-          <FaStar className="text-yellow-400" />
-          <FaStar className="text-yellow-400" />
-          <FaStar className="text-yellow-400" />
-          <FaStar className="text-yellow-400" />
-          <FaStar className="text-yellow-400" />
+    <li className="btn-fav" title={item.name}>
+      <a href={item.imageRef} className="link bg-center">
+        <div className="relative w-[200px]">
+          <img
+            src={item.imageUrl}
+            alt={item.name}
+            className="object-cover h-40 w-40 content-center"
+          />
+          <div className="absolute left-0 right-0 px-4 py-2 bg-gray-800 opacity-70">
+            <h3 className="text-xl text-white font-bold">{item.name}</h3>
+            <p className="mt-2 text-sm text-gray-300">{item.comment}</p>
+          </div>
         </div>
-        <div className="m-4 bg-slate-100 rounded shadow-lg h-auto">
-          <div className="text-xs">Year</div>
-          <div className="text-xs">{item.released}</div>
-          <div className="text-xs">Produced by</div>
-          <div className="text-xs">Wit Studio / Mappa</div>
-          <div className="text-xs">dflgdflgdfhjgdfhgjkdhfljgdfjl</div>
-          <div className="text-xs">dflgdflgdfhjgdfhgjkdhfljgdfjl</div>
-          <div className="text-xs">dflgdflgdfhjgdfhgjkdhfljgdfjl</div>
-          <div className="text-xs">dflgdflgdfhjgdfhgjkdhfljgdfjl</div>
-          <div className="text-xs">dflgdflgdfhjgdfhgjkdhfljgdfjl</div>
-          <div className="text-xs">dflgdflgdfhjgdfhgjkdhfljgdfjl</div>
-          <div className="text-xs">dflgdflgdfhjgdfhgjkdhfljgdfjl</div>
+        <br></br>
+        <br></br>
+        <br></br>
+        <div className="flex justify-center relative w-[200px]">
+          {[...Array(10)].map((_, index) => (
+            <button
+              key={index}
+              className={
+                index < item.rating ? 'text-yellow-400' : 'text-gray-300'
+              }
+            >
+              <FaStar />
+            </button>
+          ))}
+        </div>
+        <br></br>
+        <div className="m-2 bg-slate-100 rounded shadow-lg h-auto relative w-[200px]">
+          <div className="text-base text-center">Released: {item.released}</div>
+          <div className="text-base text-center">Made by: {item.createdBy}</div>
+          {Object.keys(item.extraFields).map((field) => (
+            <div className="text-base text-center">
+              {field}: {item.extraFields[field]}
+            </div>
+          ))}
         </div>
       </a>
     </li>

@@ -8,27 +8,37 @@ const itemSchema = new Schema<IItem>({
   },
   category: {
     type: String,
-    required: true,
+    required: [true, 'Each item must belong to a category'],
   },
   name: {
     type: String,
-    required: true,
+    required: [true, 'Each item must have a name'],
   },
   comment: {
     type: String,
-    required: true,
+    required: false,
   },
   rating: {
     type: Number,
-    required: true,
+    min: 1,
+    max: 10,
+    required: [true, 'Each item must have a rating'],
   },
   released: {
     type: Number,
-    required: true,
+    required: [true, 'Each item must have a release date'],
+  },
+  createdBy: {
+    type: String,
+    required: false,
+  },
+  imageRef: {
+    type: String,
+    required: false,
   },
   imageUrl: {
     type: String,
-    required: true,
+    default: 'https://apply.sts.net.pk/assets/images/default-upload-image.jpg',
   },
   extraFields: {
     type: Map,
