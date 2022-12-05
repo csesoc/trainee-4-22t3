@@ -1,5 +1,9 @@
+import { useNavigate } from 'react-router-dom';
+
 function HomePage() {
   const handleSubmit = () => {};
+  const navigate = useNavigate();
+
   return (
     <section className="h-screen">
       <nav class="bg-white border-gray-200 px-2 sm:px-4 py-2.5 dark:bg-gray-900">
@@ -44,7 +48,7 @@ function HomePage() {
               </button>
             </div>
           </form>
-          <a href="https://flowbite.com/" class="flex items-center">
+          <div onClick={() => { navigate('/') }} class="flex items-center cursor-pointer">
             <img
               src="https://i.imgur.com/ylqbx7Y.png"
               class="mr-3 h-6 sm:h-9"
@@ -54,7 +58,7 @@ function HomePage() {
             <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
               identiFun
             </span>
-          </a>
+          </div>
           <button
             data-collapse-toggle="navbar-default"
             type="button"
@@ -103,6 +107,7 @@ function HomePage() {
 
 
       <div class="grid lg:grid-cols-3 h-screen place-items-center">
+
         <div class="max-w-xs mx-4 mb-2 rounded-lg shadow-lg">
             <img class="w-full h-48"
                 src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=989&q=80"
@@ -114,6 +119,7 @@ function HomePage() {
                     Praesen tium, quibusdam facere quo laborum maiores sequi nam tenetur laud.</p>
             </div>
         </div>
+
         <div class="max-w-xs mx-4 mb-2 rounded-lg shadow-lg">
             <img class="w-full h-48"
                 src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=989&q=80"
@@ -125,6 +131,7 @@ function HomePage() {
                     Praesen tium, quibusdam facere quo laborum maiores sequi nam tenetur laud.</p>
             </div>
         </div>
+
         <div class="max-w-xs mx-4 mb-2 rounded-lg shadow-lg">
             <img class="w-full h-48"
                 src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=989&q=80"
@@ -136,6 +143,7 @@ function HomePage() {
                     Praesen tium, quibusdam facere quo laborum maiores sequi nam tenetur laud.</p>
             </div>
         </div>
+        
     </div>
 
 
@@ -161,10 +169,6 @@ function HomePage() {
         </span>
       </footer>
     </section>
-
-
-
-    
   );
 }
 
