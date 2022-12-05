@@ -21,7 +21,7 @@ export interface IItem {
   rating: number;
   imageUrl: string;
   released: number;
-  extraFields?: {
+  extraFields: {
     [key: string]: string;
   };
 }
@@ -32,7 +32,7 @@ export interface Items {
   rating: number;
   released: number;
   imageUrl: string;
-  extraFields?: {
-    [key: string]: string | undefined;
+  extraFields: {
+    [key: string]: string;
   };
 }
