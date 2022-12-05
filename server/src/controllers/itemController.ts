@@ -1,32 +1,54 @@
 import { Request, Response } from 'express';
 import Item from '../models/itemModel';
-import { Items, IItem } from '../models/interfaces';
+import User from '../models/userModel';
+import { Items, IItem, User as UserType } from '../models/interfaces';
 
-// userSchema.add({education: String, age: Number, profile_pic: String});
+interface CategoryItems {
+  [key: string]: Array<Items>;
+}
 
+/**
+ * @desc    Gets all items belonging to authorized user
+ * @routes  GET /items/get
+ */
+const getItems = async (req: Request, res: Response) => {
+  if (!req.user) {
+    res.status(401).json({ error: 'Not authenticated' });
+    return;
+  }
+  res.status(200).json(await groupUserItems(req.user));
+};
+
+/**
+ * @desc    Adds a user-created item
+ * @route   POST /items/add
+ */
 const addItem = async (req: Request, res: Response) => {
   const { name, comment, category, released, imageUrl, rating, extraFields } =
     req.body;
-  const user = req.user;
-  if (user) {
-    const item = await Item.create({
-      uId: user._id,
-      category,
-      name,
-      comment,
-      rating,
-      released,
-      imageUrl,
-      extraFields,
-    });
-    if (item) {
-      res.status(200).json(item);
-    } else {
-      res.status(400).json({ error: 'Could not create item' });
-    }
+  if (!req.user) {
+    res.status(401).json({ error: 'Not authenticated' });
+    return;
   }
+  const item = await Item.create({
+    uId: req.user._id,
+    category,
+    name,
+    comment,
+    rating,
+    released,
+    imageUrl,
+    extraFields: extraFields ? extraFields : {},
+  });
+  res.status(200).json(item);
 };
 
+// TODO: Actually test update and delete routes lol
+
+/**
+ * @desc    Deletes a user-created item
+ * @route   DELETE items/delete/:id
+ */
 const deleteItem = async (req: Request, res: Response) => {
   const user = req.user;
   const itemId = req.params.id;
@@ -43,6 +65,10 @@ const deleteItem = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * @desc    Updates a user-created item
+ * @route   PUT items/update/:id
+ */
 const updateItem = async (req: Request, res: Response) => {
   const user = req.user;
   const itemId = req.params.id;
@@ -61,40 +87,51 @@ const updateItem = async (req: Request, res: Response) => {
   }
 };
 
-interface SortedItem {
-  [key: string]: Array<Items>;
-}
+/*
+ * @desc    Gets the items of 3 random users to display on the homepage
+ * @route   GET /homepage/get
+ */
+const getHomepageItems = async (req: Request, res: Response) => {
+  const users = await User.aggregate([{ $sample: { size: 3 } }]);
+  const homepageItems = [];
 
-const getItems = async (req: Request, res: Response) => {
-  const user = req.user;
-  if (user) {
-    const allItems = await Item.find({ uId: user._id });
-    if (allItems) {
-      const sorted = {} as SortedItem;
-      allItems.forEach((item: IItem) => {
-        let categoryName = item.category;
-        // Adds category if it doesn't exist already
-        if (!(categoryName in sorted)) {
-          sorted[categoryName] = [];
-        }
-        // Adds item
-        sorted[categoryName].push({
-          name: item.name,
-          comment: item.comment,
-          rating: item.rating,
-          released: item.released,
-          imageUrl: item.imageUrl,
-          extraFields: item.extraFields,
-        });
-      });
-      // Sorts items of each category by rating
-      Object.keys(sorted).forEach((key) =>
-        sorted[key].sort((a, b) => b.rating - a.rating)
-      );
-      res.status(200).json(sorted);
-    } else {
-      res.status(400).json({ error: 'Could not find item' });
-    }
+  for (const user of users) {
+    homepageItems.push({
+      user: { username: user.username },
+      items: await groupUserItems(user),
+    });
   }
+
+  res.status(200).json(homepageItems);
 };
-export { addItem, updateItem, deleteItem, getItems };
+
+/*
+ * Groups all of a user's items by category
+ */
+const groupUserItems = async (user: UserType) => {
+  const allItems = await Item.find({ uId: user._id });
+  const categoryItems: CategoryItems = {};
+  allItems.forEach((item: IItem) => {
+    let categoryName = item.category;
+    // Adds category if it doesn't exist already
+    if (!(categoryName in categoryItems)) {
+      categoryItems[categoryName] = [];
+    }
+    // Adds item
+    categoryItems[categoryName].push({
+      name: item.name,
+      comment: item.comment,
+      rating: item.rating,
+      released: item.released,
+      imageUrl: item.imageUrl,
+      extraFields: item.extraFields,
+    });
+  });
+  // Sorts items of each category by rating
+  Object.keys(categoryItems).forEach((key) =>
+    categoryItems[key].sort((a, b) => b.rating - a.rating)
+  );
+  return categoryItems;
+};
+
+export { addItem, updateItem, deleteItem, getItems, getHomepageItems };
