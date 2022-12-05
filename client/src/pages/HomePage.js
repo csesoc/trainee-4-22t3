@@ -7,8 +7,6 @@ import defaultImg from '../images/default.jpg';
 function HomePage() {
   const [identiFunners, setIdentiFunners] = useState([]);
 
-  const handleSubmit = () => {};
-
   useEffect(() => {
     axios
       .get('http://localhost:5000/items/homepage/get')
