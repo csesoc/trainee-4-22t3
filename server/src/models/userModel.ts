@@ -1,5 +1,4 @@
 import { Schema, model } from 'mongoose';
-import { PopulatedDoc } from 'mongoose';
 import { IUser } from './interfaces';
 
 const userSchema = new Schema<IUser>({

@@ -25,7 +25,7 @@ export interface IItem {
   imageRef: string;
   released: number;
   createdBy: string;
-  extraFields?: {
+  extraFields: {
     [key: string]: string;
   };
 }
@@ -38,7 +38,7 @@ export interface Items {
   imageUrl: string;
   imageRef: string;
   createdBy: string;
-  extraFields?: {
-    [key: string]: string | undefined;
+  extraFields: {
+    [key: string]: string;
   };
 }
