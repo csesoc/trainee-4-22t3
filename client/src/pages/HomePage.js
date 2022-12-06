@@ -28,7 +28,7 @@ function HomePage() {
         <button onClick={fetchData} class="float-right my-4 mx-8"><img src={refreshIcon} class="object-scale-down h-12 w-12 hover:opacity-[.84]" /></button>
       </div>
       
-      <div class="grid lg:grid-cols-3 min-h-[75%] align-top my-12">
+      <div class="grid lg:grid-cols-3 min-h-[75%] align-top my-2">
         {homepageData.map((userData) => (
           <HomePageCard userData={userData} />
         ))}
