@@ -1,11 +1,30 @@
 import { FaWindowClose, FaStar } from 'react-icons/fa';
-function ListItem({ item }) {
+import defaultImg from '../images/default.jpg';
+import axios from 'axios';
+function ListItem({ token, item, setSuccess }) {
+  const deleteItem = (id) => {
+    axios
+      .delete(`http://localhost:5000/items/delete/` + id, {
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
+      })
+      .then(setSuccess(true));
+  };
   return (
     <li className="btn-fav max-h-full py-4" title={item.name}>
-      <div className="justify-center">
-        <FaWindowClose></FaWindowClose>
+      <div className="flex align-end">
+        <button onClick={() => deleteItem(item.itemId.toString())}>
+          <FaWindowClose />
+        </button>
       </div>
-      <a href={item.imageRef} className="link bg-center">
+      <a
+        href={item.imageRef}
+        onError={(e) => {
+          e.target.src = defaultImg;
+        }}
+        className="link bg-center"
+      >
         <div className="relative w-[200px] pb-20">
           <img
             src={item.imageUrl}
@@ -31,7 +50,6 @@ function ListItem({ item }) {
         </div>
         <div className="m-2 bg-slate-100 rounded shadow-lg h-auto relative w-[200px] pt-4">
           <div className="text-base">Released: {item.released}</div>
-          <div className="text-base">Made by: {item.createdBy}</div>
           {Object.keys(item.extraFields).map((field) => (
             <div className="text-base">
               {field}: {item.extraFields[field]}

@@ -24,14 +24,6 @@ const itemSchema = new Schema<IItem>({
     max: 10,
     required: [true, 'Each item must have a rating'],
   },
-  released: {
-    type: Number,
-    required: [true, 'Each item must have a release date'],
-  },
-  createdBy: {
-    type: String,
-    required: false,
-  },
   imageRef: {
     type: String,
     required: false,

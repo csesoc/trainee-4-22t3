@@ -12,11 +12,17 @@ interface CategoryItems {
  * @routes  GET /items/get
  */
 const getItems = async (req: Request, res: Response) => {
+  const username = req.query.username;
+  const user = await User.findOne({ username });
   if (!req.user) {
     res.status(401).json({ error: 'Not authenticated' });
     return;
   }
-  res.status(200).json(await groupUserItems(req.user._id.toString()));
+  if (!user) {
+    res.status(400).json({ error: 'Username not found' });
+    return;
+  }
+  res.status(200).json(await groupUserItems(user._id.toString()));
 };
 
 /**
@@ -32,7 +38,6 @@ const addItem = async (req: Request, res: Response) => {
     imageRef,
     imageUrl,
     rating,
-    createdBy,
     extraFields,
   } = req.body;
   const user = req.user;
@@ -50,7 +55,6 @@ const addItem = async (req: Request, res: Response) => {
     imageRef,
     imageUrl,
     extraFields: extraFields ? extraFields : {},
-    createdBy,
   });
   res.status(200).json(item);
 };
@@ -128,13 +132,12 @@ const groupUserItems = async (uId: string) => {
     }
     // Adds item
     categoryItems[categoryName].push({
+      itemId: item._id,
       name: item.name,
       comment: item.comment,
       rating: item.rating,
-      released: item.released,
       imageRef: item.imageRef,
       imageUrl: item.imageUrl,
-      createdBy: item.createdBy,
       extraFields: item.extraFields,
     });
   });

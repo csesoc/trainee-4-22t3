@@ -8,15 +8,20 @@ import ProfilePage from './pages/ProfilePage';
 
 function App() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
-
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage setUser={setUser} />} />
+        <Route path="/" element={<HomePage user={user} setUser={setUser} />} />
+        <Route
+          path="/login"
+          element={<LoginPage user={user} setUser={setUser} />}
+        />
         <Route path="/register" element={<RegisterPage setUser={setUser} />} />
         <Route path="/demo" element={<Demo />} />
-        <Route path="/profile" element={<ProfilePage user={user} />} />
+        <Route
+          path="/profile/:username"
+          element={<ProfilePage user={user} setUser={setUser} />}
+        />
       </Routes>
     </BrowserRouter>
   );

@@ -5,7 +5,7 @@ import Footer from '../components/Footer';
 import HomePageCard from '../components/HomePageCard';
 import refreshIcon from '../images/refresh.jpg';
 
-function HomePage() {
+function HomePage({ user, setUser }) {
   const [homepageData, setHomepageData] = useState([]);
 
   const fetchData = () => {
@@ -22,24 +22,25 @@ function HomePage() {
 
   return (
     <section>
-      <Navbar />
-      <div class="flow-root">
-        <h1 class="float-left my-4 mx-5 font-bold text-4xl">
+      <Navbar user={user} setUser={setUser} />
+      <div className="flow-root">
+        <h1 className="float-left my-4 mx-5 font-bold text-4xl">
           Check out these profiles!
         </h1>
         <button
           onClick={fetchData}
-          class="float-right my-4 mx-8"
+          className="float-right my-4 mx-8"
           title="Refresh"
         >
           <img
             src={refreshIcon}
-            class="object-scale-down h-12 w-12 hover:opacity-[.84]"
+            className="object-scale-down h-12 w-12 hover:opacity-[.84]"
+            alt="RefreshIcon"
           />
         </button>
       </div>
 
-      <div class="grid lg:grid-cols-3 min-h-[75%] align-top my-2">
+      <div className="grid lg:grid-cols-3 min-h-[75%] align-top my-2">
         {homepageData.map((userData) => (
           <HomePageCard userData={userData} />
         ))}

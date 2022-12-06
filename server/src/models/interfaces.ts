@@ -16,6 +16,7 @@ export interface IUser {
 }
 
 export interface IItem {
+  _id: Types.ObjectId;
   uId: Types.ObjectId;
   category: string;
   name: string;
@@ -23,21 +24,18 @@ export interface IItem {
   rating: number;
   imageUrl: string;
   imageRef: string;
-  released: number;
-  createdBy: string;
   extraFields: {
     [key: string]: string;
   };
 }
 
 export interface Items {
+  itemId: Types.ObjectId;
   name: string;
   comment: string;
   rating: number;
-  released: number;
   imageUrl: string;
   imageRef: string;
-  createdBy: string;
   extraFields: {
     [key: string]: string;
   };
