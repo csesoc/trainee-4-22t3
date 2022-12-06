@@ -4,7 +4,7 @@ function NavbarLogo() {
   const navigate = useNavigate();
   
   return (
-    <div onClick={() => {navigate('/')}} class="flex items-center cursor-pointer">
+    <div onClick={() => {navigate('/')}} class="flex items-center cursor-pointer" title="identiFun">
       <img
         src="https://i.imgur.com/ylqbx7Y.png"
         class="mr-3 h-6 sm:h-9"
