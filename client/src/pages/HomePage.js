@@ -5,12 +5,12 @@ import Footer from '../components/Footer';
 import HomePageCard from '../components/HomePageCard';
 
 function HomePage() {
-  const [identiFunners, setIdentiFunners] = useState([]);
+  const [homepageData, setHomepageData] = useState([]);
 
   useEffect(() => {
     axios
       .get('http://localhost:5000/items/homepage/get')
-      .then((response) => setIdentiFunners(response.data))
+      .then((response) => setHomepageData(response.data))
       .catch((err) => {
         console.log(err);
       });
@@ -20,7 +20,7 @@ function HomePage() {
     <section class="h-screen">
       <Navbar />
       <div class="grid lg:grid-cols-3 min-h-[75%] align-top my-12">
-        {identiFunners.map((userData) => (
+        {homepageData.map((userData) => (
           <HomePageCard userData={userData} />
         ))}
       </div>
