@@ -17,8 +17,9 @@ function HomePage() {
   }, []);
   
   return (
-    <section class="h-screen">
+    <section>
       <Navbar />
+      <h1 class="my-4 mx-5 font-bold text-4xl">Welcome</h1>
       <div class="grid lg:grid-cols-3 min-h-[75%] align-top my-12">
         {homepageData.map((userData) => (
           <HomePageCard userData={userData} />

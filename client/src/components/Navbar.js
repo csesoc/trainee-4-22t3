@@ -33,8 +33,7 @@ function Navbar() {
 
   return (
     <section>
-      <nav class="bg-white border-gray-200 px-2 sm:px-4 py-2.5 dark:bg-gray-900">
-        <h1>hello</h1>
+      <nav class="px-2 py-2 sm:px-4 bg-[#252526]">
         <div class="container flex flex-wrap justify-between items-center mx-auto">
           <div onClick={() => {navigate('/')}} class="flex items-center cursor-pointer">
             <img
