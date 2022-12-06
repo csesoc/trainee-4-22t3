@@ -7,7 +7,7 @@ function Navbar() {
 
   return (
     <section>
-      <nav class="px-2 py-2 sm:px-4 bg-[#252526]">
+      <nav class="py-2 bg-[#252526]">
         <div class="container flex flex-wrap justify-between items-center mx-auto">
           <NavbarLogo />
           <NavbarSearch />
