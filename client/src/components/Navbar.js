@@ -8,6 +8,8 @@ function Navbar() {
   const [input, setInput] = useState('');
   const [userMatches, setUserMatches] = useState([]);
 
+  const [displaySearches, setDisplaySearches] = useState(false);
+
   const handleOnChange = (ev) => {
     setInput(ev.target.value);
   }
@@ -16,14 +18,23 @@ function Navbar() {
     axios
       .get('http://localhost:5000/users/search?searchStr=' + input)
       .then((response) => setUserMatches(response.data))
+      .then(() => {
+        if (input !== '') {
+          setDisplaySearches(true);
+        }
+      })
       .catch((err) => {
         console.log(err);
       });
+    if (input === '') {
+      setDisplaySearches(false);
+    }
   }, [input]);
 
   return (
     <section>
       <nav class="bg-white border-gray-200 px-2 sm:px-4 py-2.5 dark:bg-gray-900">
+        <h1>hello</h1>
         <div class="container flex flex-wrap justify-between items-center mx-auto">
           <div onClick={() => {navigate('/')}} class="flex items-center cursor-pointer">
             <img
@@ -48,9 +59,9 @@ function Navbar() {
             </form>
             <div id="dropdown" class="absolute my-1 z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700">
               <ul class="text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefault">
-                {input === '' ? null : userMatches.map((username) => (
-                  <li class="py-2 px-4 rounded hover:bg-gray-600 hover:cursor-pointer">
-                    <button onClick={() => {navigate('/profile')}}>{username}</button>
+                {displaySearches === false ? null : userMatches.map((username) => (
+                  <li onClick={() => {navigate('/profile/' + username)}} class="py-2 px-4 rounded hover:bg-gray-600 hover:cursor-pointer">
+                    <p>{username}</p>
                   </li>
                 ))}
               </ul>
