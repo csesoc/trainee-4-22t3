@@ -50,9 +50,13 @@ const loginUser = async (req: Request, res: Response) => {
 
 const searchUsers = async (req: Request, res: Response) => {
   const searchStr = req.query.searchStr as string;
-  const userMatches = await User.find({username : new RegExp(searchStr, 'i')});
-  const usernames = userMatches.map(user => user.username);
-  res.status(200).json(usernames);
+  try {
+    const userMatches = await User.find({username : new RegExp(searchStr, 'i')});
+    const usernames = userMatches.map(user => user.username);
+    res.status(200).json(usernames);
+  } catch (err) {
+    res.status(200).json([]);
+  }
 };
 
 /**
