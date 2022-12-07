@@ -11,7 +11,7 @@ function HomePageCard({ userData }) {
           onClick={() => navigate('/profile/' + userData.user.username)}
           title={userData.user.username + "'s profile"}
         >
-          <h2 className="text-3xl font-medium text-center text-white hover:text-slate-400">
+          <h2 className="text-3xl font-light text-center text-white hover:text-slate-400">
             {userData.user.username}
           </h2>
         </button>
