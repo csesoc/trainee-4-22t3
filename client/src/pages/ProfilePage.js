@@ -3,7 +3,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import TestItem from '../components/CategoryCard';
+import CategoryCard from '../components/CategoryCard';
 import ItemForm from '../components/ItemForm';
 function ProfilePage({ user, setUser }) {
   const [identiFunners, setIdentiFunners] = useState({});
@@ -29,9 +29,9 @@ function ProfilePage({ user, setUser }) {
   return (
     <section className="h-screen">
       <Navbar user={user} setUser={setUser} />
-      <div className="grid grid-cols-2 -space-x-20">
+      <div className="grid grid-cols-3 gap-0">
         {Object.keys(identiFunners).map((category) => (
-          <TestItem
+          <CategoryCard
             category={category}
             items={identiFunners[category]}
             setSuccess={setSuccess}
@@ -40,11 +40,9 @@ function ProfilePage({ user, setUser }) {
         ))}
       </div>
       <div>
-        {(() => {
-          if (username === user.username) {
-            return <ItemForm token={user.token} setUser={setUser} />;
-          }
-        })()}
+        {username === user.username && (
+          <ItemForm token={user.token} setSuccess={setSuccess} />
+        )}
       </div>
       <Footer />
     </section>

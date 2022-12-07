@@ -30,16 +30,9 @@ const getItems = async (req: Request, res: Response) => {
  * @route   POST /items/add
  */
 const addItem = async (req: Request, res: Response) => {
-  const {
-    name,
-    comment,
-    category,
-    released,
-    imageRef,
-    imageUrl,
-    rating,
-    extraFields,
-  } = req.body;
+  const { name, comment, category, imageRef, imageUrl, rating, extraFields } =
+    req.body;
+  console.log(req.body);
   const user = req.user;
   if (!user) {
     res.status(401).json({ error: 'Not authenticated' });
@@ -51,7 +44,6 @@ const addItem = async (req: Request, res: Response) => {
     name,
     comment,
     rating,
-    released,
     imageRef,
     imageUrl,
     extraFields: extraFields ? extraFields : {},

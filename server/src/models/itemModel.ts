@@ -30,7 +30,6 @@ const itemSchema = new Schema<IItem>({
   },
   imageUrl: {
     type: String,
-    default: 'https://apply.sts.net.pk/assets/images/default-upload-image.jpg',
   },
   extraFields: {
     type: Map,

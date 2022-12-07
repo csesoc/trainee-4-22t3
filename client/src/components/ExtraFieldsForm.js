@@ -14,14 +14,12 @@ export default function ExtraFieldsForm({ customFields, setCustomFields }) {
     <div className="block p-6 rounded-lg shadow-lg bg-white max-w-sm">
       <form>
         <div className="form-group mb-6">
-          <label
-            for="exampleInputEmail1"
-            className="form-label inline-block mb-2 text-gray-700"
-          >
+          <label className="form-label inline-block mb-2 text-gray-700">
             Tag
           </label>
           <input
             type="text"
+            value={tag}
             onChange={(e) => setTag(e.target.value)}
             className="form-control
             block
@@ -50,6 +48,7 @@ export default function ExtraFieldsForm({ customFields, setCustomFields }) {
           </label>
           <input
             type="text"
+            value={content}
             onChange={(e) => setContent(e.target.value)}
             className="form-control block
             w-full

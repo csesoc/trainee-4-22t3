@@ -3,7 +3,6 @@ import User from '../models/userModel';
 import jwt from 'jsonwebtoken';
 
 function authenticateToken(req: Request, res: Response, next: any) {
-  console.log(req.headers);
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
   console.log(token);

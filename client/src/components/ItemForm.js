@@ -19,8 +19,10 @@ export default function ItemForm({ token, setSuccess }) {
       headers: {
         Authorization: 'Bearer ' + token,
       },
+    };
+    const fields = {
       category,
-      itemName,
+      name: itemName,
       comment,
       imageRef,
       imageUrl,
@@ -30,7 +32,7 @@ export default function ItemForm({ token, setSuccess }) {
     console.log(request);
     e.preventDefault();
     axios
-      .post('http://localhost:5000/items/add', request)
+      .post('http://localhost:5000/items/add', fields, request)
       .then(() => {
         setSuccess(true);
         setCategory('');
@@ -42,7 +44,7 @@ export default function ItemForm({ token, setSuccess }) {
         setCustomFields({});
         setRating(1);
       })
-      .catch((error) => handleError(error.response.data.error));
+      .catch((error) => console.log(error));
   };
 
   const handleError = (message) => {
@@ -66,6 +68,7 @@ export default function ItemForm({ token, setSuccess }) {
                     </label>
                     <input
                       type="text"
+                      value={itemName}
                       onChange={(e) => setItemName(e.target.value)}
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-xs"
                     />
@@ -76,6 +79,7 @@ export default function ItemForm({ token, setSuccess }) {
                     </label>
                     <input
                       type="text"
+                      value={category}
                       onChange={(e) => setCategory(e.target.value)}
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-xs"
                     />
@@ -86,6 +90,7 @@ export default function ItemForm({ token, setSuccess }) {
                     </label>
                     <input
                       type="text"
+                      value={comment}
                       onChange={(e) => setComment(e.target.value)}
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-xs"
                     />
@@ -100,6 +105,7 @@ export default function ItemForm({ token, setSuccess }) {
                     </span>
                     <input
                       type="text"
+                      value={imageUrl}
                       onChange={(e) => setImageUrl(e.target.value)}
                       className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-xs"
                       placeholder="www.example.com"
@@ -114,6 +120,7 @@ export default function ItemForm({ token, setSuccess }) {
                     </span>
                     <input
                       type="text"
+                      value={imageRef}
                       onChange={(e) => setImageRef(e.target.value)}
                       className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-xs"
                       placeholder="www.example.com"
@@ -168,16 +175,12 @@ export default function ItemForm({ token, setSuccess }) {
               </div>
             </form>
           </div>
-          {(() => {
-            if (extraFields) {
-              return (
-                <ExtraFieldsForm
-                  setCustomFields={setCustomFields}
-                  customFields={customFields}
-                />
-              );
-            }
-          })()}
+          {extraFields && (
+            <ExtraFieldsForm
+              setCustomFields={setCustomFields}
+              customFields={customFields}
+            />
+          )}
         </div>
       </div>
     </>
