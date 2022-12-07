@@ -1,5 +1,5 @@
 import ListItem from './ListItem';
-function TestItem({ token, category, items, setSuccess }) {
+function CategoryCard({ token, category, items, setSuccess }) {
   return (
     <div className="flex flex-col m-4 bg-slate-100 rounded shadow-lg h-auto max-w-xl rounded-lg px-10 shadow-lg border-4 bg-cyan-300/20">
       <div className="overflow-auto">
@@ -14,4 +14,4 @@ function TestItem({ token, category, items, setSuccess }) {
   );
 }
 
-export default TestItem;
+export default CategoryCard;

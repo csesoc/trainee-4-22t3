@@ -5,7 +5,8 @@ export default function ExtraFieldsForm({ customFields, setCustomFields }) {
   const [content, setContent] = useState('');
   const handleClick = (event) => {
     event.preventDefault();
-    setCustomFields((customFields[tag] = content));
+    setCustomFields({ ...customFields, [tag]: content });
+    console.log(customFields);
     setTag('');
     setContent('');
   };

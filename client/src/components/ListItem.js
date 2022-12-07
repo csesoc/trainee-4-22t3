@@ -49,7 +49,6 @@ function ListItem({ token, item, setSuccess }) {
           ))}
         </div>
         <div className="m-2 bg-slate-100 rounded shadow-lg h-auto relative w-[200px] pt-4">
-          <div className="text-base">Released: {item.released}</div>
           {Object.keys(item.extraFields).map((field) => (
             <div className="text-base">
               {field}: {item.extraFields[field]}

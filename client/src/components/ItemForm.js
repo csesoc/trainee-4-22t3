@@ -15,24 +15,23 @@ export default function ItemForm({ token, setSuccess }) {
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = (e) => {
-    // e.preventDefault() to prevent submitting to a website and reloading
+    const request = {
+      headers: {
+        Authorization: 'Bearer ' + token,
+      },
+      category,
+      itemName,
+      comment,
+      imageRef,
+      imageUrl,
+      rating,
+      extraFields: customFields,
+    };
+    console.log(request);
     e.preventDefault();
-    // Make a POST request to create a new item with form fields
     axios
-      .post('http://localhost:5000/items/add', {
-        headers: {
-          Authorization: 'Bearer ' + token,
-        },
-        category,
-        itemName,
-        comment,
-        imageRef,
-        imageUrl,
-        rating,
-        extraFields: customFields,
-      })
+      .post('http://localhost:5000/items/add', request)
       .then(() => {
-        // Set success state to re-fetch updated data
         setSuccess(true);
         setCategory('');
         setComment('');
@@ -46,7 +45,6 @@ export default function ItemForm({ token, setSuccess }) {
       .catch((error) => handleError(error.response.data.error));
   };
 
-  // Display error message for 3 seconds
   const handleError = (message) => {
     setErrorMessage(message);
     setTimeout(() => {
@@ -141,7 +139,7 @@ export default function ItemForm({ token, setSuccess }) {
                             <input
                               type="checkbox"
                               value={2}
-                              onChange={(e) => setExtraFields(!extraFields)}
+                              onChange={(e) => setExtraFields(e.target.checked)}
                               className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                             />
                           </div>
