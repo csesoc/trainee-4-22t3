@@ -12,26 +12,24 @@ function ListItem({ token, item, setSuccess }) {
       .then(setSuccess(true));
   };
   return (
-    <li className="btn-fav py-4 bg-red-100" title={item.name}>
-      <div className="flex align-end bg-blue-100">
+    <div className="relative bg-red-100 w-50 grow">
+      <div className="flex align-end absolute left-0 top-0 bg-blue-100">
         <button onClick={() => deleteItem(item.itemId.toString())}>
           <FaWindowClose />
         </button>
       </div>
       <a href={item.imageRef} className="link bg-center">
-        {/* <div className="relative w-[200px] pb-20"> */}
         <img
           src={item.imageUrl}
           onError={(e) => {
             e.target.src = defaultImg;
           }}
           alt={item.name}
-          className="h-48 max-w-full"
+          className="object-cover h-48 w-full"
         />
-        <div className="px-4 py-2 bg-gray-800 opacity-70 shadow-sm transition ease-in-out hover:shadow-xl duration-200">
+        <div className="px-4 py-2 bg-gray-800 opacity-70">
           <h3 className="text-xl text-white font-bold">{item.name}</h3>
           <p className="mt-2 text-sm text-gray-300">{item.comment}</p>
-          {/* </div> */}
         </div>
       </a>
       <div className="flex justify-center pt-4 px-4">
@@ -46,14 +44,14 @@ function ListItem({ token, item, setSuccess }) {
           </button>
         ))}
       </div>
-      <div className="m-2 bg-slate-100 rounded shadow-lg pt-4">
+      <div className="m-2 bg-slate-100 rounded shadow-lg">
         {Object.keys(item.extraFields).map((field) => (
-          <div className="text-base">
+          <div className="px-2 text-base">
             {field}: {item.extraFields[field]}
           </div>
         ))}
       </div>
-    </li>
+    </div>
   );
 }
 
