@@ -6,7 +6,7 @@ function Navbar({ user, setUser }) {
   const navigate = useNavigate();
   return (
     <section>
-      <nav className="py-2 bg-[#252526]">
+      <nav className="py-2 bg-gray-800">
         <div className="container flex flex-wrap justify-between items-center mx-auto">
           <NavbarLogo />
           <NavbarSearch />
