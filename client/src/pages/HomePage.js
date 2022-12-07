@@ -34,7 +34,7 @@ function HomePage({ user, setUser }) {
         >
           <img
             src={refreshIcon}
-            className="object-scale-down h-10 w-10 hover:opacity-[.84]"
+            className="object-scale-down h-10 w-10 hover:opacity-[.7]"
             alt="RefreshIcon"
           />
         </button>
