@@ -18,6 +18,7 @@ function LoginPage({ user, setUser }) {
       })
       .then((response) => {
         setUser(response.data);
+        console.log(response.data.token);
         localStorage.setItem('user', JSON.stringify(response.data));
         navigate(`/profile/${response.data.username}`);
       })

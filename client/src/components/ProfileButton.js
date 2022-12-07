@@ -10,7 +10,13 @@ function ProfileButton({ user, setUser }) {
 
   return (
     <div tabindex="1" onFocus={onFocus} onBlur={onBlur}>
-      <img class="w-10 h-10 rounded-full object-cover hover:cursor-pointer" src={user.profileImgUrl} alt="Rounded avatar"></img>
+      <img 
+        class="w-10 h-10 rounded-full object-cover hover:cursor-pointer" 
+        src={user.profileImgUrl} alt="Rounded avatar" 
+        onError={(e) => {
+          e.target.src = 'https://i.stack.imgur.com/l60Hf.png';
+        }}
+      />
       <div
         id="dropdown"
         className="absolute my-1 z-10 w-32 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 right-24"
@@ -36,7 +42,7 @@ function ProfileButton({ user, setUser }) {
                 </li>
                 <li
                   onClick={() => {
-                    navigate('/profile/' + user.username);
+                    navigate('/settings/');
                     navigate(0);
                   }}
                   className="py-2 px-4 rounded hover:bg-gray-600 hover:cursor-pointer"

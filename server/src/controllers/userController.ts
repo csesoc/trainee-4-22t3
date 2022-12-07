@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import User from '../models/userModel';
+import { User as UserType } from '../models/interfaces';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
@@ -12,10 +13,19 @@ const registerUser = async (req: Request, res: Response) => {
   const saltRounds = 10;
   const passwordHash = await bcrypt.hash(password, saltRounds);
   
+  if (username.length < 3 || username.length > 25) {
+    res.status(400).json({ error: 'Username must be between 3 and 25 characters long, inclusive.' });
+    return;
+  }
+  if (/^[a-zA-Z0-9!@\$\^\&*\)\(+._-]+$/g.test(username) !== true) {
+    res.status(400).json({ error: 'Invalid characters in username.' });
+    return;
+  }
   if (password.length < 3) {
     res.status(400).json({ error: 'Password must be at least 3 characters long.' });
     return;
   }
+  if (username)
 
   try {
     const user = await User.create({
@@ -24,6 +34,7 @@ const registerUser = async (req: Request, res: Response) => {
       password: passwordHash,
       profileImgUrl,
     });
+    User.create
 
     res.status(200).json({
       uId: user._id,
@@ -54,7 +65,7 @@ const loginUser = async (req: Request, res: Response) => {
       token: generateToken(user._id.toString()),
     });
   } else {
-    res.status(400).json({ error: 'bruh' });
+    res.status(400).json({ error: 'Could not login.' });
   }
 };
 
@@ -69,6 +80,46 @@ const searchUsers = async (req: Request, res: Response) => {
   }
 };
 
+const updateUser = async (req: Request, res: Response) => {
+  const { username, profileImgUrl } = req.body;
+  const user = req.user as UserType;
+  if (username.length < 3 || username.length > 25) {
+    res.status(400).json({ error: 'Username must be between 3 and 25 characters long, inclusive.' });
+    return;
+  }
+  if (/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g.test(username) !== true) {
+    res.status(400).json({ error: 'Invalid characters in username.' });
+    return;
+  }
+  try {
+    const userDoc = await User.findByIdAndUpdate(user._id, { username: username, profileImgUrl: profileImgUrl });
+    if (userDoc) {
+      res.status(200).json({ 
+        username: userDoc.username, 
+        profileImgUrl: userDoc.profileImgUrl 
+      });
+    } else {
+      res.status(400).json({ error: 'Could not update user details.' });
+    }
+  } catch (err) {
+    res.status(400).json(err);
+  }
+};
+
+const detailsUser = async (req: Request, res: Response) => {
+  const user = req.user as UserType;
+  try {
+    const userDoc = await User.findById(user._id);
+    if (userDoc) {
+      res.status(200).json(userDoc);
+    } else {
+      res.status(400).json({ error: 'Could not get user details' });
+    }
+  } catch (err) {
+    res.status(400).json(err);
+  }
+};
+
 /**
  * @desc  Generate a JWT token encoding the user ID
  */
@@ -78,4 +129,4 @@ const generateToken = (id: string) => {
   });
 };
 
-export { registerUser, loginUser, searchUsers };
+export { registerUser, loginUser, searchUsers, updateUser, detailsUser };

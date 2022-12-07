@@ -104,7 +104,7 @@ const getHomepageItems = async (req: Request, res: Response) => {
   const homepageItems = [];
   for (const user of users) {
     homepageItems.push({
-      user: { username: user.username },
+      user: { username: user.username, profileImgUrl: user.profileImgUrl },
       items: await groupUserItems(user._id.toString()),
     });
   }

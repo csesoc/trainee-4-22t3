@@ -10,7 +10,7 @@ function HomePageItem({ item }) {
           onError={(e) => {
             e.target.src = defaultImg;
           }}
-          class="flex-none md:w-2/3 rounded-lg h-64 object-cover transition ease-in-out hover:shadow-xl duration-200"
+          class="flex-none w-2/3 rounded-lg h-64 object-cover transition ease-in-out hover:shadow-xl duration-200"
         />
         <p class="text-white font-normal">{item.name}</p>
         <p class="text-white font-normal">{item.rating}/10</p>
