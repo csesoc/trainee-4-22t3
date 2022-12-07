@@ -8,16 +8,15 @@ function NavbarLogo() {
       onClick={() => {
         navigate('/');
       }}
-      className="flex items-center cursor-pointer"
+      class="flex items-center cursor-pointer"
       title="identiFun"
     >
       <img
         src="https://i.imgur.com/ylqbx7Y.png"
-        className="mr-3 h-6 sm:h-9"
-        style={{ width: '100px', height: '100px' }}
+        class="w-14 h-14"
         alt="identiFun logo"
       />
-      <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
+      <span class="text-xl font-semibold dark:text-white">
         identiFun
       </span>
     </div>
