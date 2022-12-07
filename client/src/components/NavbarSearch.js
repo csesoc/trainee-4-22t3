@@ -86,16 +86,16 @@ function NavbarSearch() {
           {displaySearches === false
             ? null
             : userMatches.map((username) => (
-                <li
-                  onClick={() => {
-                    navigate('/profile/' + username);
-                    navigate(0);
-                  }}
-                  className="py-2 px-4 rounded hover:bg-gray-600 hover:cursor-pointer"
-                >
-                  <p>{username}</p>
-                </li>
-              ))}
+              <li
+                onClick={() => {
+                  navigate('/profile/' + username);
+                  navigate(0);
+                }}
+                className="py-2 px-4 rounded hover:bg-gray-600 hover:cursor-pointer"
+              >
+                <p>{username}</p>
+              </li>
+            ))}
         </ul>
       </div>
     </div>

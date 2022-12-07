@@ -29,7 +29,7 @@ function HomePage({ user, setUser }) {
         </h1>
         <button
           onClick={fetchData}
-          className="float-right my-4 mx-8"
+          className="float-right my-4 mx-12"
           title="Refresh"
         >
           <img
