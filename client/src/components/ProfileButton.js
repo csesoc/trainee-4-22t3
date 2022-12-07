@@ -19,7 +19,7 @@ function ProfileButton({ user, setUser }) {
       />
       <div
         id="dropdown"
-        className="absolute my-1 z-10 w-32 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 right-24"
+        className="absolute my-1 z-10 w-32 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 object-left"
       >
         <ul
           className="text-sm text-gray-700 dark:text-gray-200"
