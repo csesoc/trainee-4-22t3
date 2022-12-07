@@ -1,24 +1,14 @@
-import { useState, useEffect } from 'react';
-import { redirect, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 function LoginPage({ user, setUser }) {
-  const [success, setSuccess] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  /*  // Makes a request to the server when component mounts + when success state is set
-  useEffect(() => {
 
-    axios
-      .get('http://localhost:5000/users/login')
-      .then((response) => setIdentiFunners(response.data));
-    // .then(setSuccess(false));
-    return () => setSuccess(false);
-  }, [success]);
-  */
   const handleSubmit = (event) => {
     event.preventDefault();
     axios
@@ -35,6 +25,7 @@ function LoginPage({ user, setUser }) {
         alert('Email/password did not link to an associated account');
       });
   };
+
   return (
     <section class="flex flex-col h-screen justify-between">
       <Navbar user={user} setUser={setUser} />
@@ -69,13 +60,14 @@ function LoginPage({ user, setUser }) {
                 />
               </div>
 
-              <div className="flex justify-between items-center mb-6">
-                <a
-                  href="#!"
-                  className="text-blue-600 hover:text-blue-700 focus:text-blue-700 active:text-blue-800 duration-200 transition ease-in-out"
-                >
-                  Forgot password?
-                </a>
+              <div className="flex items-center mb-6">
+                <p>
+                  Don't have an account? Click&nbsp;
+                  <span onClick={() => navigate('/register')}class="font-semibold text-blue-600 hover:underline hover:cursor-pointer">
+                    here
+                  </span>
+                  &nbsp;to register.
+                </p>
               </div>
 
               <button
