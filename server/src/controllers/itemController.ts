@@ -12,11 +12,17 @@ interface CategoryItems {
  * @routes  GET /items/get
  */
 const getItems = async (req: Request, res: Response) => {
+  const username = req.query.username;
+  const user = await User.findOne({ username });
   if (!req.user) {
     res.status(401).json({ error: 'Not authenticated' });
     return;
   }
-  res.status(200).json(await groupUserItems(req.user));
+  if (!user) {
+    res.status(400).json({ error: 'Username not found' });
+    return;
+  }
+  res.status(200).json(await groupUserItems(user._id.toString()));
 };
 
 /**
@@ -24,19 +30,21 @@ const getItems = async (req: Request, res: Response) => {
  * @route   POST /items/add
  */
 const addItem = async (req: Request, res: Response) => {
-  const { name, comment, category, released, imageUrl, rating, extraFields } =
+  const { name, comment, category, imageRef, imageUrl, rating, extraFields } =
     req.body;
-  if (!req.user) {
+  console.log(req.body);
+  const user = req.user;
+  if (!user) {
     res.status(401).json({ error: 'Not authenticated' });
     return;
   }
   const item = await Item.create({
-    uId: req.user._id,
+    uId: user._id,
     category,
     name,
     comment,
     rating,
-    released,
+    imageRef,
     imageUrl,
     extraFields: extraFields ? extraFields : {},
   });
@@ -94,22 +102,19 @@ const updateItem = async (req: Request, res: Response) => {
 const getHomepageItems = async (req: Request, res: Response) => {
   const users = await User.aggregate([{ $sample: { size: 3 } }]);
   const homepageItems = [];
-
   for (const user of users) {
     homepageItems.push({
       user: { username: user.username },
-      items: await groupUserItems(user),
+      items: await groupUserItems(user._id.toString()),
     });
   }
-
   res.status(200).json(homepageItems);
 };
-
 /*
  * Groups all of a user's items by category
  */
-const groupUserItems = async (user: UserType) => {
-  const allItems = await Item.find({ uId: user._id });
+const groupUserItems = async (uId: string) => {
+  const allItems = await Item.find({ uId });
   const categoryItems: CategoryItems = {};
   allItems.forEach((item: IItem) => {
     let categoryName = item.category;
@@ -119,10 +124,11 @@ const groupUserItems = async (user: UserType) => {
     }
     // Adds item
     categoryItems[categoryName].push({
+      itemId: item._id,
       name: item.name,
       comment: item.comment,
       rating: item.rating,
-      released: item.released,
+      imageRef: item.imageRef,
       imageUrl: item.imageUrl,
       extraFields: item.extraFields,
     });

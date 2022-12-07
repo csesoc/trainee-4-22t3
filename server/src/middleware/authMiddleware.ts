@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 function authenticateToken(req: Request, res: Response, next: any) {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
+  console.log(token);
 
   if (token == null) {
     res.status(401).json({ error: 'No token' });

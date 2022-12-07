@@ -8,21 +8,20 @@ import jwt from 'jsonwebtoken';
  * @routes  POST /users/register
  */
 const registerUser = async (req: Request, res: Response) => {
-  const { username, email, password } = req.body;
-
+  const { username, email, password, profileImgUrl } = req.body;
   const saltRounds = 10;
   const passwordHash = await bcrypt.hash(password, saltRounds);
   const user = await User.create({
     username,
     email,
     password: passwordHash,
+    profileImgUrl,
   });
 
   res.json({
     uId: user._id,
     username: user.username,
     email: user.email,
-    password: user.password,
     token: generateToken(user._id.toString()),
   });
 };
@@ -40,7 +39,7 @@ const loginUser = async (req: Request, res: Response) => {
       uId: user._id,
       username: user.username,
       email: user.email,
-      password: user.password,
+      profileImgUrl: user.profileImgUrl,
       token: generateToken(user._id.toString()),
     });
   } else {
