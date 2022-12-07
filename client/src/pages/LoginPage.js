@@ -36,7 +36,7 @@ function LoginPage({ user, setUser }) {
       });
   };
   return (
-    <section>
+    <section class="flex flex-col h-screen justify-between">
       <Navbar user={user} setUser={setUser} />
       <div className="container px-6 py-12 h-full">
         <div className="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
