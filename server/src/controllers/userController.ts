@@ -13,14 +13,18 @@ const registerUser = async (req: Request, res: Response) => {
   const saltRounds = 10;
   const passwordHash = await bcrypt.hash(password, saltRounds);
   
+  const userMatches = await User.find({ username: username});
   if (username.length < 3 || username.length > 25) {
     res.status(400).json({ error: 'Username must be between 3 and 25 characters long, inclusive.' });
     return;
-  }
-  if (/^[a-zA-Z0-9!@\$\^\&*\)\(+._-]+$/g.test(username) !== true) {
-    res.status(400).json({ error: 'Invalid characters in username.' });
+  } else if (/^[a-zA-Z0-9!@\$\^\&*\)\(._-]+$/g.test(username) !== true) {
+    res.status(400).json({ error: 'Username contains an invalid character.' });
+    return;
+  } else if (userMatches.length !== 0) {
+    res.status(400).json({ error: 'Username is already taken.' });
     return;
   }
+  
   if (password.length < 3) {
     res.status(400).json({ error: 'Password must be at least 3 characters long.' });
     return;
@@ -83,14 +87,19 @@ const searchUsers = async (req: Request, res: Response) => {
 const updateUser = async (req: Request, res: Response) => {
   const { username, profileImgUrl } = req.body;
   const user = req.user as UserType;
+  
+  const userMatches = await User.find({ username: username});
   if (username.length < 3 || username.length > 25) {
     res.status(400).json({ error: 'Username must be between 3 and 25 characters long, inclusive.' });
     return;
-  }
-  if (/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g.test(username) !== true) {
-    res.status(400).json({ error: 'Invalid characters in username.' });
+  } else if (/^[a-zA-Z0-9!@\$\^\&*\)\(._-]+$/g.test(username) !== true) {
+    res.status(400).json({ error: 'Username contains an invalid character.' });
+    return;
+  } else if (userMatches.length !== 0) {
+    res.status(400).json({ error: 'Username is already taken.' });
     return;
   }
+
   try {
     const userDoc = await User.findByIdAndUpdate(user._id, { username: username, profileImgUrl: profileImgUrl });
     if (userDoc) {
@@ -128,5 +137,7 @@ const generateToken = (id: string) => {
     expiresIn: '1h',
   });
 };
+
+
 
 export { registerUser, loginUser, searchUsers, updateUser, detailsUser };

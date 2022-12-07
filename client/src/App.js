@@ -24,7 +24,7 @@ function App() {
             uId: userDetails._id,
             username: userDetails.username,
             email: userDetails.email,
-            profileImgUrl: userDetails.profileImgUrl,
+            profileImgUrl: userDetails.profileImgUrl ? userDetails.profileImgUrl : 'https://i.stack.imgur.com/l60Hf.png',
             token: user.token
           });
           localStorage.setItem('user', JSON.stringify(user));
