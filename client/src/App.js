@@ -16,7 +16,7 @@ function App() {
           path="/login"
           element={<LoginPage user={user} setUser={setUser} />}
         />
-        <Route path="/register" element={<RegisterPage setUser={setUser} />} />
+        <Route path="/register" element={<RegisterPage user={user} setUser={setUser} />} />
         <Route path="/demo" element={<Demo />} />
         <Route
           path="/profile/:username"

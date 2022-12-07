@@ -11,19 +11,30 @@ const registerUser = async (req: Request, res: Response) => {
   const { username, email, password, profileImgUrl } = req.body;
   const saltRounds = 10;
   const passwordHash = await bcrypt.hash(password, saltRounds);
-  const user = await User.create({
-    username,
-    email,
-    password: passwordHash,
-    profileImgUrl,
-  });
+  
+  if (password.length < 3) {
+    res.status(400).json({ error: 'Password must be at least 3 characters long.' });
+    return;
+  }
 
-  res.json({
-    uId: user._id,
-    username: user.username,
-    email: user.email,
-    token: generateToken(user._id.toString()),
-  });
+  try {
+    const user = await User.create({
+      username,
+      email,
+      password: passwordHash,
+      profileImgUrl,
+    });
+
+    res.status(200).json({
+      uId: user._id,
+      username: user.username,
+      email: user.email,
+      profileImgUrl: user.profileImgUrl,
+      token: generateToken(user._id.toString())
+    });
+  } catch (err) {
+    res.status(400).json(err);
+  }
 };
 
 /**

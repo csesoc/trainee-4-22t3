@@ -9,17 +9,16 @@ const userSchema = new Schema<IUser>({
     unique: true,
     match: [
       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-      'Please fill a valid email address',
+      'Invalid email address',
     ],
   },
   username: {
     type: String,
-    minLength: [3, 'Username must be atleast 3 characters long'],
+    minLength: [3, 'Username must be at least 3 characters long'],
     maxLength: [25, 'Username cannot be over 25 characters long'],
   },
   password: {
     type: String,
-    minLength: [3, 'Password must be atleast 3 characters long'],
   },
   profileImgUrl: {
     type: String,
