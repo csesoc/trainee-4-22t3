@@ -15,7 +15,9 @@ function NavbarSearch() {
 
   const [focused, setFocused] = useState(false);
   const onFocus = () => setFocused(true);
-  const onBlur = () => setFocused(false);
+  const onBlur = () => setTimeout(() => {
+    setFocused(false);
+  }, 68);
 
   useEffect(() => {
     axios
