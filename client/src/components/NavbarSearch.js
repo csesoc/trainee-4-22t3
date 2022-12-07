@@ -15,9 +15,7 @@ function NavbarSearch() {
 
   const [focused, setFocused] = useState(false);
   const onFocus = () => setFocused(true);
-  const onBlur = () => setTimeout(() => {
-    setFocused(false);
-  }, 68);
+  const onBlur = () => setFocused(false);
 
   useEffect(() => {
     axios
@@ -46,7 +44,7 @@ function NavbarSearch() {
   }, [focused]);
 
   return (
-    <div>
+    <div tabindex="0" onFocus={onFocus} onBlur={onBlur}>
       <form>
         <div className="relative">
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -71,7 +69,6 @@ function NavbarSearch() {
             id="default-search"
             onChange={handleOnChange}
             onFocus={onFocus}
-            onBlur={onBlur}
             className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Search users"
             required
@@ -92,6 +89,7 @@ function NavbarSearch() {
                 <li
                   onClick={() => {
                     navigate('/profile/' + username);
+                    navigate(0);
                   }}
                   className="py-2 px-4 rounded hover:bg-gray-600 hover:cursor-pointer"
                 >
