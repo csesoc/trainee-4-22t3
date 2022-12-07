@@ -24,6 +24,7 @@ function Navbar({ user, setUser }) {
             ) : (
               <button
                 onClick={() => {
+                  localStorage.removeItem('user');
                   setUser('');
                   navigate('/');
                 }}
