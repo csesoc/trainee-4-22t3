@@ -1,13 +1,12 @@
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
-function ProfileButton({ user }) {
+function ProfileButton({ user, setUser }) {
   const navigate = useNavigate();
 
   const [focused, setFocused] = useState(false);
   const onFocus = () => setFocused(true);
   const onBlur = () => setFocused(false);
-
 
   return (
     <div tabindex="1" onFocus={onFocus} onBlur={onBlur}>
@@ -31,6 +30,7 @@ function ProfileButton({ user }) {
                     navigate(0);
                   }}
                   className="py-2 px-4 rounded hover:bg-gray-600 hover:cursor-pointer"
+                  title="Your profile"
                 >   
                   <p>Profile</p>
                 </li>
@@ -40,15 +40,19 @@ function ProfileButton({ user }) {
                     navigate(0);
                   }}
                   className="py-2 px-4 rounded hover:bg-gray-600 hover:cursor-pointer"
+                  title="User settings"
                 >   
                   <p>Settings</p>
                 </li>
                 <li
                   onClick={() => {
-                    navigate('/profile/' + user.username);
+                    localStorage.removeItem('user');
+                    setUser(null);
+                    navigate('/');
                     navigate(0);
                   }}
                   className="py-2 px-4 rounded hover:bg-gray-600 hover:cursor-pointer"
+                  title="Logout"
                 >   
                   <p>Logout</p>
                 </li>
