@@ -32,18 +32,18 @@ function ProfileButton({ user, setUser }) {
       })
   }, []);
 
+  const navigate = useNavigate();
+
+  const [focused, setFocused] = useState(false);
+  const onFocus = () => setFocused(true);
+  const onBlur = () => setFocused(false);
+
   const logout = () => {
     localStorage.removeItem('user');
     setUser(null);
     navigate('/');
     navigate(0);
   }
-
-  const navigate = useNavigate();
-
-  const [focused, setFocused] = useState(false);
-  const onFocus = () => setFocused(true);
-  const onBlur = () => setFocused(false);
 
   return (
     <div tabindex="1" onFocus={onFocus} onBlur={onBlur}>

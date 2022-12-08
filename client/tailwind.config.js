@@ -15,12 +15,11 @@ module.exports = {
     plugin(function ({ addUtilities }) {
       addUtilities({
         '.scrollbar::-webkit-scrollbar': {
-          'background-color': '#000',
           'width': '16px',
-          'height': '16px',
+          'height': '16px'
         },
         '.scrollbar::-webkit-scrollbar-track': {
-          'background-color': '#1e293b',
+          'background-color': 'rgb(30, 41, 59)',
         },
         '.scrollbar::-webkit-scrollbar-thumb': {
           'background-color': 'rgba(186, 186, 192, 1)',
@@ -29,9 +28,6 @@ module.exports = {
         },
         '.scrollbar::-webkit-scrollbar-thumb:active': { 
           'background-color': 'rgb(120, 120, 120)'
-        },
-        '.scrollbar::-webkit-scrollbar-button': {
-          'display': 'none',
         },
         '.scrollbar-thumb-hide::-webkit-scrollbar-thumb': {
           'background-color': 'rgba(186, 186, 192, 0)'
