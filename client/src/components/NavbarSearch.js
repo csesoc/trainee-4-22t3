@@ -1,10 +1,7 @@
-import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function NavbarSearch() {
-  const navigate = useNavigate();
-
   const [userMatches, setUserMatches] = useState([]);
   const [displaySearches, setDisplaySearches] = useState(false);
 
@@ -46,11 +43,11 @@ function NavbarSearch() {
   return (
     <div tabindex="0" onFocus={onFocus} onBlur={onBlur}>
       <form>
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
             <svg
               aria-hidden="true"
-              className="w-5 h-5 text-gray-500 dark:text-gray-400"
+              class="w-5 h-5 text-gray-500 dark:text-gray-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -69,7 +66,7 @@ function NavbarSearch() {
             id="default-search"
             onChange={handleOnChange}
             onFocus={onFocus}
-            className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Search users"
             required
           />
@@ -77,23 +74,23 @@ function NavbarSearch() {
       </form>
       <div
         id="dropdown"
-        className="absolute my-1 z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700"
+        class="absolute my-1 z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700"
       >
         <ul
-          className="text-sm text-gray-700 dark:text-gray-200"
+          class="text-sm text-gray-700 dark:text-gray-200"
           aria-labelledby="dropdownDefault"
         >
           {displaySearches === false
             ? null
             : userMatches.map((username) => (
               <li
-                onClick={() => {
-                  navigate('/profile/' + username);
-                  navigate(0);
-                }}
-                className="py-2 px-4 rounded hover:bg-gray-600 hover:cursor-pointer"
+                class="hover:bg-gray-600 hover:rounded hover:cursor-pointer"
               >
-                <p>{username}</p>
+                <div class="py-2 px-4">
+                  <a href={'http://localhost:3000/profile/' + username}>
+                    <p>{username}</p>
+                  </a>
+                </div>
               </li>
             ))}
         </ul>

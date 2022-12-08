@@ -1,8 +1,4 @@
-import { useNavigate } from 'react-router-dom';
-
 function NavbarLogo() {
-  const navigate = useNavigate();
-
   return (
     <div title="identiFun">
       <a href="http://localhost:3000/" class="flex items-center">
