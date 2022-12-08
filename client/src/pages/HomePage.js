@@ -23,24 +23,24 @@ function HomePage({ user, setUser }) {
   return (
     <section>
       <Navbar user={user} setUser={setUser} />
-      <div className="flow-root">
-        <h1 className="float-left my-4 mx-5 font-bold text-4xl">
+      <div className="flex bg-gray-900">
+        <h1 className="my-4 mx-5 font-bold text-4xl text-white">
           Check out these profiles!
         </h1>
         <button
           onClick={fetchData}
-          className="float-right my-4 mx-8"
+          className="my-5 mx-4"
           title="Refresh"
         >
           <img
             src={refreshIcon}
-            className="object-scale-down h-12 w-12 hover:opacity-[.84]"
+            className="object-scale-down h-10 w-10 hover:opacity-[.6]"
             alt="RefreshIcon"
           />
         </button>
       </div>
 
-      <div className="grid lg:grid-cols-3 min-h-[75%] align-top my-2">
+      <div className="grid lg:grid-cols-3 min-h-[75%] align-top bg-gray-900">
         {homepageData.map((userData) => (
           <HomePageCard userData={userData} />
         ))}
