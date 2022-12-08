@@ -14,7 +14,7 @@ const router = express.Router();
 router.post('/add', authenticateToken, addItem);
 router.delete('/delete/:id', authenticateToken, deleteItem);
 router.put('/update/:id', authenticateToken, updateItem);
-router.get('/get/', authenticateToken, getItems);
+router.get('/get/', getItems);
 router.get('/homepage/get', getHomepageItems);
 
 export default router;

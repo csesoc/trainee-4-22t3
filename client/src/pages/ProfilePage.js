@@ -3,8 +3,8 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import EditForm from '../components/EditForm';
 import CategoryCard from '../components/CategoryCard';
-import ItemForm from '../components/ItemForm';
 function ProfilePage({ user, setUser }) {
   const [identiFunners, setIdentiFunners] = useState({});
   const [success, setSuccess] = useState(false);
@@ -13,9 +13,6 @@ function ProfilePage({ user, setUser }) {
   useEffect(() => {
     axios
       .get('http://localhost:5000/items/get', {
-        headers: {
-          Authorization: 'Bearer ' + user.token,
-        },
         params: {
           username,
         },
@@ -30,7 +27,7 @@ function ProfilePage({ user, setUser }) {
     <>
       <Navbar user={user} setUser={setUser} />
       <section className="h-screen">
-        <div className="grid grid-cols-3 gap-0">
+        <div className="grid lg:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1 gap-0">
           {Object.keys(identiFunners).map((category) => (
             <CategoryCard
               category={category}
@@ -41,11 +38,17 @@ function ProfilePage({ user, setUser }) {
             />
           ))}
         </div>
-        {username === user.username && (
-          <ItemForm token={user.token} setSuccess={setSuccess} />
-        )}
-        <Footer />
+        <EditForm item={null} setSuccess={setSuccess} user={user} />
+        {/* {change && (
+          <EditForm
+            setChange={setChange}
+            item={null}
+            setSuccess={setSuccess}
+            user={user}
+          />
+        )} */}
       </section>
+      <Footer />
     </>
   );
 }
