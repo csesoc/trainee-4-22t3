@@ -6,7 +6,7 @@ import ProfileButton from './ProfileButton';
 function Navbar({ user, setUser }) {
   const navigate = useNavigate();
   return (
-    <nav class="sticky top-0 py-2 bg-gray-800">
+    <nav class="sticky z-10 top-0 py-2 bg-gray-800">
       <div class="container flex flex-wrap justify-between items-center mx-auto">
         <NavbarLogo />
         <NavbarSearch />
