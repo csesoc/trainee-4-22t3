@@ -56,13 +56,13 @@ export default function ItemForm({ token, setSuccess }) {
 
   return (
     <>
-      <div className="mt-10 sm:mt-0">
-        <div className="md:grid md:grid-cols-5 md:gap-6">
-          <div className="mt-5 md:col-span-2 md:mt-0">
+      <div className="mt-10 sm:mt-0 flex justify-center align-bottom">
+        <div className="md:grid md:grid-cols-2 md:gap-x-8">
+          <div className="mt-5 md:col-span-1 md:mt-0">
             <form action="#" method="POST">
               <div className="overflow-hidden shadow sm:rounded-md">
                 <div className="bg-white px-4 py-5 sm:p-6">
-                  <div className="col-span-6 sm:col-span-3 py-2">
+                  <div className="col-span- sm:col-span-3 py-2">
                     <label className="block text-xs font-medium text-gray-700">
                       Item Name
                     </label>
@@ -175,12 +175,14 @@ export default function ItemForm({ token, setSuccess }) {
               </div>
             </form>
           </div>
-          {extraFields && (
-            <ExtraFieldsForm
-              setCustomFields={setCustomFields}
-              customFields={customFields}
-            />
-          )}
+          <div className="">
+            {extraFields && (
+              <ExtraFieldsForm
+                setCustomFields={setCustomFields}
+                customFields={customFields}
+              />
+            )}
+          </div>
         </div>
       </div>
     </>

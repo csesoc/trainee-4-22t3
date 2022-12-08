@@ -12,7 +12,7 @@ function ListItem({ token, item, setSuccess }) {
       .then(setSuccess(true));
   };
   return (
-    <div className="relative bg-red-100 w-50 grow">
+    <div className="relative bg-red-100 w-48">
       <div className="flex align-end absolute left-0 top-0 bg-blue-100">
         <button onClick={() => deleteItem(item.itemId.toString())}>
           <FaWindowClose />
@@ -25,14 +25,14 @@ function ListItem({ token, item, setSuccess }) {
             e.target.src = defaultImg;
           }}
           alt={item.name}
-          className="object-cover h-48 w-full"
+          className="object-cover h-32 w-52"
         />
-        <div className="px-4 py-2 bg-gray-800 opacity-70">
+        <div className="px-4 py-2 bg-gray-800 opacity-70 overflow-hidden">
           <h3 className="text-xl text-white font-bold">{item.name}</h3>
           <p className="mt-2 text-sm text-gray-300">{item.comment}</p>
         </div>
       </a>
-      <div className="flex justify-center pt-4 px-4">
+      <div className="flex justify-center p-4">
         {[...Array(10)].map((_, index) => (
           <button
             key={index}

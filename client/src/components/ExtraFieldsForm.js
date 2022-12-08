@@ -6,12 +6,11 @@ export default function ExtraFieldsForm({ customFields, setCustomFields }) {
   const handleClick = (event) => {
     event.preventDefault();
     setCustomFields({ ...customFields, [tag]: content });
-    console.log(customFields);
     setTag('');
     setContent('');
   };
   return (
-    <div className="block p-6 rounded-lg shadow-lg bg-white max-w-sm">
+    <div className="block px-4 py-8 rounded-lg shadow-lg bg-white max-w-sm flex justify-center">
       <form>
         <div className="form-group mb-6">
           <label className="form-label inline-block mb-2 text-gray-700">
@@ -73,12 +72,12 @@ export default function ExtraFieldsForm({ customFields, setCustomFields }) {
           onClick={handleClick}
           className="
           px-6
+          bottom-0
           py-2.5
           bg-blue-600
           text-white
           font-medium
           text-xs
-          leading-tight
           rounded
           shadow-md
           hover:bg-blue-700 hover:shadow-lg

@@ -39,7 +39,7 @@ function ProfilePage({ user, setUser }) {
           />
         ))}
       </div>
-      <div>
+      <div className="w-full">
         {username === user.username && (
           <ItemForm token={user.token} setSuccess={setSuccess} />
         )}

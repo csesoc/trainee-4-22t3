@@ -2,7 +2,7 @@ import defaultImg from '../images/default.jpg';
 
 function HomePageItem({ item }) {
   return (
-    <div className="inline-flex">
+    <div className="inline-flex content-center">
       <div className="w-64 h-100 max-w-xs overflow-hidden rounded-lg bg-white">
         <img
           src={item.imageUrl}
