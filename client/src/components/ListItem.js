@@ -1,7 +1,9 @@
 import { FaWindowClose, FaStar } from 'react-icons/fa';
 import defaultImg from '../images/default.jpg';
 import axios from 'axios';
-function ListItem({ token, item, setSuccess }) {
+import { useParams } from 'react-router-dom';
+function ListItem({ user, token, item, setSuccess }) {
+  const { username } = useParams();
   const deleteItem = (id) => {
     axios
       .delete(`http://localhost:5000/items/delete/` + id, {
@@ -12,12 +14,14 @@ function ListItem({ token, item, setSuccess }) {
       .then(setSuccess(true));
   };
   return (
-    <div className="relative bg-red-100 w-50 grow">
-      <div className="flex align-end absolute left-0 top-0 bg-blue-100">
-        <button onClick={() => deleteItem(item.itemId.toString())}>
-          <FaWindowClose />
-        </button>
-      </div>
+    <div className="relative w-48">
+      {username === user.username && (
+        <div className="flex align-end absolute left-0 top-0">
+          <button onClick={() => deleteItem(item.itemId.toString())}>
+            <FaWindowClose />
+          </button>
+        </div>
+      )}
       <a href={item.imageRef} className="link bg-center">
         <img
           src={item.imageUrl}
@@ -25,14 +29,14 @@ function ListItem({ token, item, setSuccess }) {
             e.target.src = defaultImg;
           }}
           alt={item.name}
-          className="object-cover h-48 w-full"
+          className="object-cover h-32 w-52"
         />
-        <div className="px-4 py-2 bg-gray-800 opacity-70">
+        <div className="px-4 py-2 bg-gray-800 opacity-70 overflow-hidden">
           <h3 className="text-xl text-white font-bold">{item.name}</h3>
           <p className="mt-2 text-sm text-gray-300">{item.comment}</p>
         </div>
       </a>
-      <div className="flex justify-center pt-4 px-4">
+      <div className="flex justify-center p-4">
         {[...Array(10)].map((_, index) => (
           <button
             key={index}
@@ -44,7 +48,7 @@ function ListItem({ token, item, setSuccess }) {
           </button>
         ))}
       </div>
-      <div className="m-2 bg-slate-100 rounded shadow-lg">
+      <div className="m-2 bg-sky-900 text-gray-300 rounded shadow-lg">
         {Object.keys(item.extraFields).map((field) => (
           <div className="px-2 text-base">
             {field}: {item.extraFields[field]}
