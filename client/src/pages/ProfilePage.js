@@ -37,14 +37,13 @@ function ProfilePage({ user, setUser }) {
               items={identiFunners[category]}
               setSuccess={setSuccess}
               token={user.token}
+              user={user}
             />
           ))}
         </div>
-        <div className="w-full">
-          {username === user.username && (
-            <ItemForm token={user.token} setSuccess={setSuccess} />
-          )}
-        </div>
+        {username === user.username && (
+          <ItemForm token={user.token} setSuccess={setSuccess} />
+        )}
         <Footer />
       </section>
     </>

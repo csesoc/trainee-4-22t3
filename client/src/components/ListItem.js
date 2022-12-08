@@ -1,7 +1,9 @@
 import { FaWindowClose, FaStar } from 'react-icons/fa';
 import defaultImg from '../images/default.jpg';
 import axios from 'axios';
-function ListItem({ token, item, setSuccess }) {
+import { useParams } from 'react-router-dom';
+function ListItem({ user, token, item, setSuccess }) {
+  const { username } = useParams();
   const deleteItem = (id) => {
     axios
       .delete(`http://localhost:5000/items/delete/` + id, {
@@ -13,11 +15,13 @@ function ListItem({ token, item, setSuccess }) {
   };
   return (
     <div className="relative w-48">
-      <div className="flex align-end absolute left-0 top-0">
-        <button onClick={() => deleteItem(item.itemId.toString())}>
-          <FaWindowClose />
-        </button>
-      </div>
+      {username === user.username && (
+        <div className="flex align-end absolute left-0 top-0">
+          <button onClick={() => deleteItem(item.itemId.toString())}>
+            <FaWindowClose />
+          </button>
+        </div>
+      )}
       <a href={item.imageRef} className="link bg-center">
         <img
           src={item.imageUrl}

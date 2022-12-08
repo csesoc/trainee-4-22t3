@@ -11,8 +11,6 @@ export default function ItemForm({ token, setSuccess }) {
   const [extraFields, setExtraFields] = useState(false);
   const [customFields, setCustomFields] = useState({});
   const [rating, setRating] = useState(1);
-  // Any error message to be displayed
-  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = (e) => {
     const request = {
@@ -29,7 +27,6 @@ export default function ItemForm({ token, setSuccess }) {
       rating,
       extraFields: customFields,
     };
-    console.log(request);
     e.preventDefault();
     axios
       .post('http://localhost:5000/items/add', fields, request)
@@ -44,14 +41,7 @@ export default function ItemForm({ token, setSuccess }) {
         setCustomFields({});
         setRating(1);
       })
-      .catch((error) => console.log(error));
-  };
-
-  const handleError = (message) => {
-    setErrorMessage(message);
-    setTimeout(() => {
-      setErrorMessage('');
-    }, 3000);
+      .catch((error) => alert(error));
   };
 
   return (
