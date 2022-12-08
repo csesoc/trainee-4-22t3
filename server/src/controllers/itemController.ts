@@ -32,7 +32,6 @@ const getItems = async (req: Request, res: Response) => {
 const addItem = async (req: Request, res: Response) => {
   const { name, comment, category, imageRef, imageUrl, rating, extraFields } =
     req.body;
-  console.log(req.body);
   const user = req.user;
   if (!user) {
     res.status(401).json({ error: 'Not authenticated' });

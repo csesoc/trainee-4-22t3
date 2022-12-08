@@ -27,25 +27,27 @@ function ProfilePage({ user, setUser }) {
     return () => setSuccess(false);
   }, [success]);
   return (
-    <section className="h-screen">
+    <>
       <Navbar user={user} setUser={setUser} />
-      <div className="grid grid-cols-3 gap-0">
-        {Object.keys(identiFunners).map((category) => (
-          <CategoryCard
-            category={category}
-            items={identiFunners[category]}
-            setSuccess={setSuccess}
-            token={user.token}
-          />
-        ))}
-      </div>
-      <div className="w-full">
-        {username === user.username && (
-          <ItemForm token={user.token} setSuccess={setSuccess} />
-        )}
-      </div>
-      <Footer />
-    </section>
+      <section className="h-screen">
+        <div className="grid grid-cols-3 gap-0">
+          {Object.keys(identiFunners).map((category) => (
+            <CategoryCard
+              category={category}
+              items={identiFunners[category]}
+              setSuccess={setSuccess}
+              token={user.token}
+            />
+          ))}
+        </div>
+        <div className="w-full">
+          {username === user.username && (
+            <ItemForm token={user.token} setSuccess={setSuccess} />
+          )}
+        </div>
+        <Footer />
+      </section>
+    </>
   );
 }
 

@@ -12,8 +12,8 @@ function ListItem({ token, item, setSuccess }) {
       .then(setSuccess(true));
   };
   return (
-    <div className="relative bg-red-100 w-48">
-      <div className="flex align-end absolute left-0 top-0 bg-blue-100">
+    <div className="relative w-48">
+      <div className="flex align-end absolute left-0 top-0">
         <button onClick={() => deleteItem(item.itemId.toString())}>
           <FaWindowClose />
         </button>
@@ -44,7 +44,7 @@ function ListItem({ token, item, setSuccess }) {
           </button>
         ))}
       </div>
-      <div className="m-2 bg-slate-100 rounded shadow-lg">
+      <div className="m-2 bg-sky-900 text-gray-300 rounded shadow-lg">
         {Object.keys(item.extraFields).map((field) => (
           <div className="px-2 text-base">
             {field}: {item.extraFields[field]}
