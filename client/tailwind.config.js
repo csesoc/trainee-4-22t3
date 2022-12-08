@@ -20,15 +20,21 @@ module.exports = {
           'height': '16px',
         },
         '.scrollbar::-webkit-scrollbar-track': {
-            'background-color': '#1e293b',
+          'background-color': '#1e293b',
         },
         '.scrollbar::-webkit-scrollbar-thumb': {
-            'background-color': '#babac0',
-            'border-radius': '16px',
-            'border': '5px solid #1e293b',
+          'background-color': 'rgba(186, 186, 192, 1)',
+          'border-radius': '16px',
+          'border': '5px solid #1e293b',
+        },
+        '.scrollbar::-webkit-scrollbar-thumb:active': { 
+          'background-color': 'rgb(100, 100, 100)'
         },
         '.scrollbar::-webkit-scrollbar-button': {
-            'display': 'none',
+          'display': 'none',
+        },
+        '.scrollbar-thumb-hide::-webkit-scrollbar-thumb': {
+          'background-color': 'rgba(186, 186, 192, 0)'
         }
       })
     })
