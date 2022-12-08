@@ -1,12 +1,49 @@
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function ProfileButton({ user, setUser }) {
+  useEffect(() => {
+    axios
+      .get('http://localhost:5000/users/get', {
+        headers: {
+          Authorization: 'Bearer ' + user.token,
+        }
+      })
+      .then((response) => {
+        const userDetails = response.data
+        setUser({
+          uId: userDetails._id,
+          username: userDetails.username,
+          email: userDetails.email,
+          profileImgUrl: userDetails.profileImgUrl ? userDetails.profileImgUrl : 'https://i.stack.imgur.com/l60Hf.png',
+          token: user.token
+        });
+        localStorage.setItem('user', JSON.stringify(user));
+      })
+      .catch((error) => {
+        if ('errors' in error.response.data) {
+          const errorType = Object.keys(error.response.data.errors)[0];
+          alert(error.response.data.errors[errorType].message);
+        } else if (error.response.request.status === 403) {
+          alert('Your login session has expired.');
+          logout();
+        }
+      })
+  }, []);
+
   const navigate = useNavigate();
 
   const [focused, setFocused] = useState(false);
   const onFocus = () => setFocused(true);
   const onBlur = () => setFocused(false);
+
+  const logout = () => {
+    localStorage.removeItem('user');
+    setUser(null);
+    navigate('/');
+    navigate(0);
+  }
 
   return (
     <div tabindex="1" onFocus={onFocus} onBlur={onBlur}>
@@ -19,7 +56,7 @@ function ProfileButton({ user, setUser }) {
       />
       <div
         id="dropdown"
-        className="absolute my-1 z-10 w-32 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 object-left"
+        className="absolute my-1 w-32 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 object-left"
       >
         <ul
           className="text-sm text-gray-700 dark:text-gray-200"
@@ -51,12 +88,7 @@ function ProfileButton({ user, setUser }) {
                   <p>Settings</p>
                 </li>
                 <li
-                  onClick={() => {
-                    localStorage.removeItem('user');
-                    setUser(null);
-                    navigate('/');
-                    navigate(0);
-                  }}
+                  onClick={logout}
                   className="py-2 px-4 rounded hover:bg-gray-600 hover:cursor-pointer"
                   title="Logout"
                 >   
