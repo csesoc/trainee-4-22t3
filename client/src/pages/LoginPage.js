@@ -1,24 +1,14 @@
-import { useState, useEffect } from 'react';
-import { redirect, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 function LoginPage({ user, setUser }) {
-  const [success, setSuccess] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  /*  // Makes a request to the server when component mounts + when success state is set
-  useEffect(() => {
 
-    axios
-      .get('http://localhost:5000/users/login')
-      .then((response) => setIdentiFunners(response.data));
-    // .then(setSuccess(false));
-    return () => setSuccess(false);
-  }, [success]);
-  */
   const handleSubmit = (event) => {
     event.preventDefault();
     axios
@@ -28,6 +18,7 @@ function LoginPage({ user, setUser }) {
       })
       .then((response) => {
         setUser(response.data);
+        console.log(response.data.token);
         localStorage.setItem('user', JSON.stringify(response.data));
         navigate(`/profile/${response.data.username}`);
       })
@@ -35,8 +26,9 @@ function LoginPage({ user, setUser }) {
         alert('Email/password did not link to an associated account');
       });
   };
+
   return (
-    <section>
+    <section class="flex flex-col h-screen justify-between bg-gray-900">
       <Navbar user={user} setUser={setUser} />
       <div className="container px-6 py-12 h-full">
         <div className="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
@@ -47,45 +39,45 @@ function LoginPage({ user, setUser }) {
               alt="Phone"
             />
           </div>
-          <div className="md:w-8/12 lg:w-5/12 lg:ml-20">
+          <div className="md:w-8/12 lg:w-5/12 lg:ml-20 space-y-4">
+            <label class="text-xl font-bold leading-tight tracking-tight text-white md:text-2xl">Login</label>
             <form onSubmit={handleSubmit}>
               <div className="mb-6">
                 <input
                   type="text"
-                  className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Email address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
-
               <div className="mb-6">
                 <input
                   type="password"
-                  className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-
-              <div className="flex justify-between items-center mb-6">
-                <a
-                  href="#!"
-                  className="text-blue-600 hover:text-blue-700 focus:text-blue-700 active:text-blue-800 duration-200 transition ease-in-out"
-                >
-                  Forgot password?
-                </a>
-              </div>
-
               <button
                 type="submit"
                 className="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
                 data-mdb-ripple="true"
                 data-mdb-ripple-color="light"
               >
-                Sign in
+                Login
               </button>
+              <div className="flex items-center mb-6 my-2">
+                <p class="text-gray-400 font-light">
+                  Don't have an account?&nbsp;
+                  <a
+                    href="http://localhost:3000/register"
+                    class="font-medium text-blue-600 hover:underline hover:cursor-pointer">
+                      Register here
+                  </a>
+                </p>
+              </div>
             </form>
           </div>
         </div>

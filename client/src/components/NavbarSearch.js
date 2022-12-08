@@ -44,7 +44,7 @@ function NavbarSearch() {
   }, [focused]);
 
   return (
-    <div>
+    <div tabindex="0" onFocus={onFocus} onBlur={onBlur}>
       <form>
         <div className="relative">
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -61,7 +61,7 @@ function NavbarSearch() {
                 strokeLinejoin="round"
                 strokeWidth="2"
                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              ></path>
+              />
             </svg>
           </div>
           <input
@@ -69,7 +69,6 @@ function NavbarSearch() {
             id="default-search"
             onChange={handleOnChange}
             onFocus={onFocus}
-            onBlur={onBlur}
             className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Search users"
             required
@@ -87,15 +86,16 @@ function NavbarSearch() {
           {displaySearches === false
             ? null
             : userMatches.map((username) => (
-                <li
-                  onClick={() => {
-                    navigate('/profile/' + username);
-                  }}
-                  className="py-2 px-4 rounded hover:bg-gray-600 hover:cursor-pointer"
-                >
-                  <p>{username}</p>
-                </li>
-              ))}
+              <li
+                onClick={() => {
+                  navigate('/profile/' + username);
+                  navigate(0);
+                }}
+                className="py-2 px-4 rounded hover:bg-gray-600 hover:cursor-pointer"
+              >
+                <p>{username}</p>
+              </li>
+            ))}
         </ul>
       </div>
     </div>
