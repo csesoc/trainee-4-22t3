@@ -28,7 +28,7 @@ module.exports = {
           'border': '5px solid #1e293b',
         },
         '.scrollbar::-webkit-scrollbar-thumb:active': { 
-          'background-color': 'rgb(100, 100, 100)'
+          'background-color': 'rgb(120, 120, 120)'
         },
         '.scrollbar::-webkit-scrollbar-button': {
           'display': 'none',
