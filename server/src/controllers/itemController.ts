@@ -13,7 +13,6 @@ interface CategoryItems {
  */
 const getItems = async (req: Request, res: Response) => {
   const username = req.query.username as string;
-  console.log(username);
   const user = await User.findOne({ username });
   if (!user) {
     res.status(400).json({ error: 'Username not found' });
@@ -29,6 +28,11 @@ const getItems = async (req: Request, res: Response) => {
 const addItem = async (req: Request, res: Response) => {
   const { name, comment, category, imageRef, imageUrl, rating, extraFields } =
     req.body;
+  if (!name || !category || !rating) {
+    res.status(400).json({ error: 'Missing data' });
+    return;
+  }
+
   const user = req.user;
   if (!user) {
     res.status(401).json({ error: 'Not authenticated' });
@@ -55,18 +59,22 @@ const addItem = async (req: Request, res: Response) => {
  */
 const deleteItem = async (req: Request, res: Response) => {
   const user = req.user;
+  if (!user) {
+    res.status(401).json({ error: 'Not authenticated' });
+    return;
+  }
+
   const itemId = req.params.id;
   const item = await Item.findById(itemId);
-  if (user) {
-    if (item && item.uId.toString() === user._id.toString()) {
-      const deleted = await Item.deleteOne({ _id: itemId });
-      deleted
-        ? res.status(200).json({})
-        : res.status(400).json({ error: 'Could not delete item' });
-    } else {
-      res.status(400).json({ error: 'itemId not found' });
-    }
+  if (!item || item.uId.toString() !== user._id.toString()) {
+    res.status(400).json({ error: 'User item not found' });
+    return;
   }
+
+  const deleted = await Item.deleteOne({ _id: itemId });
+  deleted
+    ? res.status(200).json({})
+    : res.status(400).json({ error: 'Could not delete item' });
 };
 
 /**
@@ -74,21 +82,31 @@ const deleteItem = async (req: Request, res: Response) => {
  * @route   PUT items/update/:id
  */
 const updateItem = async (req: Request, res: Response) => {
+  if (!req.body.name || !req.body.rating) {
+    res.status(400).json({ error: 'Missing data' });
+    return;
+  }
+
   const user = req.user;
+  if (!user) {
+    res.status(401).json({ error: 'Not authenticated' });
+    return;
+  }
+
   const itemId = req.params.id;
   const item = await Item.findById(itemId);
-  if (user) {
-    if (item && item.uId.toString() === user._id.toString()) {
-      const item = await Item.findByIdAndUpdate(itemId, req.body, {
-        new: true,
-      });
-      item
-        ? res.status(200).json({})
-        : res.status(400).json({ error: 'Could not update item' });
-    } else {
-      res.status(400).json({ error: 'itemId not found' });
-    }
+
+  if (!item || item.uId.toString() !== user._id.toString()) {
+    res.status(400).json({ error: 'User item not found' });
+    return;
   }
+
+  const updated = await Item.findByIdAndUpdate(itemId, req.body, {
+    new: true,
+  });
+  updated
+    ? res.status(200).json({})
+    : res.status(400).json({ error: 'Could not update item' });
 };
 
 /*
