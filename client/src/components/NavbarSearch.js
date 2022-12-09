@@ -85,7 +85,7 @@ function NavbarSearch() {
             : userMatches.map((username) => (
                 <li class="hover:bg-gray-600 hover:rounded hover:cursor-pointer">
                   <div class="py-2 px-4">
-                    <a href={'http://localhost:3000/profile/' + username}>
+                    <a href={'/profile/' + username}>
                       <p>{username}</p>
                     </a>
                   </div>

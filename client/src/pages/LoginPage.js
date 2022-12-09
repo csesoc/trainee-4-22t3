@@ -74,7 +74,7 @@ function LoginPage({ user, setUser }) {
                 <p class="text-gray-400 font-light">
                   Don't have an account?&nbsp;
                   <a
-                    href="http://localhost:3000/register"
+                    href="/register"
                     class="font-medium text-blue-600 hover:underline hover:cursor-pointer"
                   >
                     Register here

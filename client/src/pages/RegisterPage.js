@@ -102,7 +102,7 @@ function RegisterPage({ user, setUser }) {
               <p class="text-sm font-light text-gray-500 dark:text-gray-400">
                 Already have an account?&nbsp;
                 <a
-                  href="http://localhost:3000/login"
+                  href="/login"
                   class="font-medium text-primary-600 hover:underline dark:text-primary-500 hover:cursor-pointer"
                 >
                   Login here
