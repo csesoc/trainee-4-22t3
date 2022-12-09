@@ -95,7 +95,7 @@ const updateUser = async (req: Request, res: Response) => {
   } else if (/^[a-zA-Z0-9!@\$\^\&*\)\(._-]+$/g.test(username) !== true) {
     res.status(400).json({ error: 'Username contains an invalid character.' });
     return;
-  } else if (userMatches.length !== 0) {
+  } else if (userMatches.length !== 0 && username !== user.username) {
     res.status(400).json({ error: 'Username is already taken.' });
     return;
   }

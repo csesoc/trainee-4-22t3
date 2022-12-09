@@ -24,32 +24,22 @@ function ProfilePage({ user, setUser }) {
     return () => setSuccess(false);
   }, [success]);
   return (
-    <>
+    <section class="flex flex-col h-screen justify-between">
       <Navbar user={user} setUser={setUser} />
-      <section className="h-screen">
-        <div className="grid lg:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1 gap-0">
-          {Object.keys(identiFunners).map((category) => (
-            <CategoryCard
-              category={category}
-              items={identiFunners[category]}
-              setSuccess={setSuccess}
-              token={user.token}
-              user={user}
-            />
-          ))}
-        </div>
-        <EditForm item={null} setSuccess={setSuccess} user={user} />
-        {/* {change && (
-          <EditForm
-            setChange={setChange}
-            item={null}
+      <div className="grid lg:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1 gap-0">
+        {Object.keys(identiFunners).map((category) => (
+          <CategoryCard
+            category={category}
+            items={identiFunners[category]}
             setSuccess={setSuccess}
+            token={user ? user.token : null}
             user={user}
           />
-        )} */}
-      </section>
+        ))}
+      </div>
+      <EditForm item={null} setSuccess={setSuccess} user={user} />
       <Footer />
-    </>
+    </section>
   );
 }
 
