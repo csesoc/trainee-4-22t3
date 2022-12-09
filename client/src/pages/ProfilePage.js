@@ -12,7 +12,7 @@ function ProfilePage({ user, setUser }) {
   // Makes a request to the server when component mounts + when success state is set
   useEffect(() => {
     axios
-      .get('http://localhost:5000/items/get', {
+      .get(process.env.REACT_APP_API_URL + '/items/get', {
         params: {
           username,
         },

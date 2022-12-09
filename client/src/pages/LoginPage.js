@@ -12,7 +12,7 @@ function LoginPage({ user, setUser }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     axios
-      .post('http://localhost:5000/users/login', {
+      .post(process.env.REACT_APP_API_URL + '/users/login', {
         email,
         password,
       })
@@ -40,7 +40,9 @@ function LoginPage({ user, setUser }) {
             />
           </div>
           <div className="md:w-8/12 lg:w-5/12 lg:ml-20 space-y-4">
-            <label class="text-xl font-bold leading-tight tracking-tight text-white md:text-2xl">Login</label>
+            <label class="text-xl font-bold leading-tight tracking-tight text-white md:text-2xl">
+              Login
+            </label>
             <form onSubmit={handleSubmit}>
               <div className="mb-6">
                 <input
@@ -72,9 +74,10 @@ function LoginPage({ user, setUser }) {
                 <p class="text-gray-400 font-light">
                   Don't have an account?&nbsp;
                   <a
-                    href="http://localhost:3000/register"
-                    class="font-medium text-blue-600 hover:underline hover:cursor-pointer">
-                      Register here
+                    href="/register"
+                    class="font-medium text-blue-600 hover:underline hover:cursor-pointer"
+                  >
+                    Register here
                   </a>
                 </p>
               </div>
