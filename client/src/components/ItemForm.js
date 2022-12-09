@@ -2,16 +2,15 @@ import { useState } from 'react';
 import axios from 'axios';
 import ExtraFieldsForm from '../components/ExtraFieldsForm';
 
-export default function ItemForm({ token, setSuccess }) {
-  const [category, setCategory] = useState('');
-  const [itemName, setItemName] = useState('');
-  const [comment, setComment] = useState('');
-  const [imageRef, setImageRef] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+export default function ItemForm({ token, setSuccess, item }) {
+  const [category, setCategory] = useState(item ? item.category : '');
+  const [itemName, setItemName] = useState(item ? item.name : '');
+  const [comment, setComment] = useState(item ? item.comment : '');
+  const [imageRef, setImageRef] = useState(item ? item.imageRef : '');
+  const [imageUrl, setImageUrl] = useState(item ? item.imageUrl : '');
   const [extraFields, setExtraFields] = useState(false);
   const [customFields, setCustomFields] = useState({});
-  const [rating, setRating] = useState(1);
-
+  const [rating, setRating] = useState(item ? item.rating : 5);
   const handleSubmit = (e) => {
     const request = {
       headers: {
@@ -28,8 +27,13 @@ export default function ItemForm({ token, setSuccess }) {
       extraFields: customFields,
     };
     e.preventDefault();
-    axios
-      .post('http://localhost:5000/items/add', fields, request)
+    axios[!item ? 'post' : 'put'](
+      !item
+        ? 'http://localhost:5000/items/add'
+        : 'http://localhost:5000/items/update/' + item.itemId,
+      fields,
+      request
+    )
       .then(() => {
         setSuccess(true);
         setCategory('');
@@ -58,31 +62,37 @@ export default function ItemForm({ token, setSuccess }) {
                   <input
                     type="text"
                     name="itemName"
-                    placeholder="Endgame"
+                    placeholder={!item ? 'Endgame' : item.name}
                     value={itemName}
                     onChange={(e) => setItemName(e.target.value)}
                     className="font-sans block text-sm leading-5 w-full py-2 px-4 border-2 text-slate-500 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-rose-200 focus:border-rose-500 dark:text-slate-400 dark:placeholder:text-slate-600 dark:bg-slate-900 dark:border-blue-500 dark:focus:ring-blue-900 dark:focus:border-blue-600"
                   ></input>
-                  <span className="text-rose-600 dark:text-rose-500 text-sm">
-                    This field is required.
-                  </span>
+                  {!item && (
+                    <span className="text-rose-600 dark:text-rose-500 text-sm">
+                      This field is required.
+                    </span>
+                  )}
                 </label>
-                <div className="py-2">
-                  <span className="text-gray-400 text-sm font-medium">
-                    Category
-                  </span>
-                  <input
-                    type="text"
-                    name="category"
-                    value={category}
-                    placeholder="Movie"
-                    onChange={(e) => setCategory(e.target.value)}
-                    className="font-sans block text-sm leading-5 w-full py-2 px-4 border-2 text-slate-500 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-rose-200 focus:border-rose-500 dark:text-slate-400 dark:placeholder:text-slate-600 dark:bg-slate-900 dark:border-blue-500 dark:focus:ring-blue-900 dark:focus:border-blue-600"
-                  />
-                  <span className="text-rose-600 dark:text-rose-500 text-sm">
-                    This field is required.
-                  </span>
-                </div>
+                {!item && (
+                  <div className="py-2">
+                    <span className="text-gray-400 text-sm font-medium">
+                      Category
+                    </span>
+                    <input
+                      type="text"
+                      name="category"
+                      value={category}
+                      placeholder={!item ? 'Movie' : item.category}
+                      onChange={(e) => setCategory(e.target.value)}
+                      className="font-sans block text-sm leading-5 w-full py-2 px-4 border-2 text-slate-500 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-rose-200 focus:border-rose-500 dark:text-slate-400 dark:placeholder:text-slate-600 dark:bg-slate-900 dark:border-blue-500 dark:focus:ring-blue-900 dark:focus:border-blue-600"
+                    />
+                    {!item && (
+                      <span className="text-rose-600 dark:text-rose-500 text-sm">
+                        This field is required.
+                      </span>
+                    )}
+                  </div>
+                )}
                 <div className="py-2">
                   <span className="text-gray-400 text-sm font-medium">
                     Comment
@@ -91,7 +101,7 @@ export default function ItemForm({ token, setSuccess }) {
                     type="text"
                     name="comment"
                     value={comment}
-                    placeholder="I am inevitable."
+                    placeholder={!item ? 'I am inevitable' : item.comment}
                     onChange={(e) => setComment(e.target.value)}
                     className="font-sans block text-sm leading-5 w-full py-2 px-4 border-2 text-slate-500 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-rose-200 focus:border-rose-500 dark:text-slate-400 dark:placeholder:text-slate-600 dark:bg-slate-900 dark:border-blue-500 dark:focus:ring-blue-900 dark:focus:border-blue-600"
                   />
@@ -107,7 +117,9 @@ export default function ItemForm({ token, setSuccess }) {
                       value={imageUrl}
                       onChange={(e) => setImageUrl(e.target.value)}
                       className="font-sans block text-sm leading-5 w-full py-2 px-4 border-2 text-slate-500 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-rose-200 focus:border-rose-500 dark:text-slate-400 dark:placeholder:text-slate-600 dark:bg-slate-900 dark:border-blue-500 dark:focus:ring-blue-900 dark:focus:border-blue-600"
-                      placeholder="http://imgur.com/avengers.jpg"
+                      placeholder={
+                        !item ? 'http://imgur.com/avengers.jpg' : item.imageUrl
+                      }
                     />
                   </div>
                 </div>
@@ -122,7 +134,9 @@ export default function ItemForm({ token, setSuccess }) {
                       value={imageRef}
                       onChange={(e) => setImageRef(e.target.value)}
                       className="font-sans block text-sm leading-5 w-full py-2 px-4 border-2 text-slate-500 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-rose-200 focus:border-rose-500 dark:text-slate-400 dark:placeholder:text-slate-600 dark:bg-slate-900 dark:border-blue-500 dark:focus:ring-blue-900 dark:focus:border-blue-600"
-                      placeholder="http://imdb.com/avengers"
+                      placeholder={
+                        !item ? 'http://imdb.com/avengers' : item.imageRef
+                      }
                     />
                   </div>
                 </div>
@@ -138,13 +152,15 @@ export default function ItemForm({ token, setSuccess }) {
                     max={10}
                     value={rating}
                     label="Rating"
-                    placeholder={5}
+                    placeholder={!item ? '5' : item.rating}
                     onChange={(e) => setRating(parseInt(e.target.value))}
                     className="font-sans block text-sm leading-5 w-full py-2 px-4 border-2 text-slate-500 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-rose-200 focus:border-rose-500 dark:text-slate-400 dark:placeholder:text-slate-600 dark:bg-slate-900 dark:border-blue-500 dark:focus:ring-blue-900 dark:focus:border-blue-600"
                   />
-                  <span className="text-rose-600 dark:text-rose-500 text-sm">
-                    This field is required.
-                  </span>
+                  {!item && (
+                    <span className="text-rose-600 dark:text-rose-500 text-sm">
+                      This field is required.
+                    </span>
+                  )}
                   <div className="mt-4 space-y-4">
                     <div className="flex items-start">
                       <div className="flex h-5 items-center">
@@ -155,14 +171,16 @@ export default function ItemForm({ token, setSuccess }) {
                           onChange={(e) => setExtraFields(e.target.checked)}
                           className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                         />
-                      </div>
-                      <div className="ml-3 text-xs">
-                        <label className="font-medium text-gray-400">
-                          Extra Fields
-                        </label>
-                        <p className="text-gray-300">
-                          Have your own custom tags on an item!
-                        </p>
+                        <div className="ml-3 text-xs">
+                          <label className="font-medium text-gray-400">
+                            Extra Fields
+                            {!item && (
+                              <p className="text-gray-300">
+                                Have your own custom tags on an item!
+                              </p>
+                            )}
+                          </label>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -188,7 +206,7 @@ export default function ItemForm({ token, setSuccess }) {
                   duration-150
                   ease-in-out"
                 >
-                  Add Item
+                  {!item ? 'Add Item' : 'Edit Item'}
                 </button>
               </div>
             </div>

@@ -12,12 +12,9 @@ interface CategoryItems {
  * @routes  GET /items/get
  */
 const getItems = async (req: Request, res: Response) => {
-  const username = req.query.username;
+  const username = req.query.username as string;
+  console.log(username);
   const user = await User.findOne({ username });
-  if (!req.user) {
-    res.status(401).json({ error: 'Not authenticated' });
-    return;
-  }
   if (!user) {
     res.status(400).json({ error: 'Username not found' });
     return;
