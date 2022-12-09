@@ -10,7 +10,7 @@ function HomePage({ user, setUser }) {
 
   const fetchData = () => {
     axios
-      .get('http://localhost:5000/items/homepage/get')
+      .get(process.env.REACT_APP_API_URL + '/items/homepage/get')
       .then((response) => setHomepageData(response.data))
       .catch((err) => {
         console.log(err);
@@ -27,11 +27,7 @@ function HomePage({ user, setUser }) {
         <h1 className="my-4 mx-5 font-bold text-4xl text-white">
           Check out these profiles!
         </h1>
-        <button
-          onClick={fetchData}
-          className="my-5 mx-4"
-          title="Refresh"
-        >
+        <button onClick={fetchData} className="my-5 mx-4" title="Refresh">
           <img
             src={refreshIcon}
             className="object-scale-down h-10 w-10 hover:opacity-[.6]"

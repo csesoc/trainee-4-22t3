@@ -5,19 +5,21 @@ import axios from 'axios';
 function ProfileButton({ user, setUser }) {
   useEffect(() => {
     axios
-      .get('http://localhost:5000/users/get', {
+      .get(process.env.REACT_APP_API_URL + '/users/get', {
         headers: {
           Authorization: 'Bearer ' + user.token,
-        }
+        },
       })
       .then((response) => {
-        const userDetails = response.data
+        const userDetails = response.data;
         setUser({
           uId: userDetails._id,
           username: userDetails.username,
           email: userDetails.email,
-          profileImgUrl: userDetails.profileImgUrl ? userDetails.profileImgUrl : 'https://i.stack.imgur.com/l60Hf.png',
-          token: user.token
+          profileImgUrl: userDetails.profileImgUrl
+            ? userDetails.profileImgUrl
+            : 'https://i.stack.imgur.com/l60Hf.png',
+          token: user.token,
         });
         localStorage.setItem('user', JSON.stringify(user));
       })
@@ -29,7 +31,7 @@ function ProfileButton({ user, setUser }) {
           alert('Your login session has expired.');
           logout();
         }
-      })
+      });
   }, []);
 
   const navigate = useNavigate();
@@ -43,13 +45,14 @@ function ProfileButton({ user, setUser }) {
     setUser(null);
     navigate('/');
     navigate(0);
-  }
+  };
 
   return (
     <div tabindex="1" onFocus={onFocus} onBlur={onBlur}>
-      <img 
-        class="w-10 h-10 rounded-full object-cover hover:cursor-pointer" 
-        src={user.profileImgUrl} alt="Rounded avatar" 
+      <img
+        class="w-10 h-10 rounded-full object-cover hover:cursor-pointer"
+        src={user.profileImgUrl}
+        alt="Rounded avatar"
         onError={(e) => {
           e.target.src = 'https://i.stack.imgur.com/l60Hf.png';
         }}
@@ -62,44 +65,41 @@ function ProfileButton({ user, setUser }) {
           className="text-sm text-gray-700 dark:text-gray-200"
           aria-labelledby="dropdownDefault"
         >
-          {
-            focused === false
-              ? null
-              : 
-              <div>
-                <li
-                  onClick={() => {
-                    navigate('/profile/' + user.username);
-                    navigate(0);
-                  }}
-                  className="py-2 px-4 rounded hover:bg-gray-600 hover:cursor-pointer"
-                  title="Your profile"
-                >   
-                  <p>Profile</p>
-                </li>
-                <li
-                  onClick={() => {
-                    navigate('/settings/');
-                    navigate(0);
-                  }}
-                  className="py-2 px-4 rounded hover:bg-gray-600 hover:cursor-pointer"
-                  title="User settings"
-                >   
-                  <p>Settings</p>
-                </li>
-                <li
-                  onClick={logout}
-                  className="py-2 px-4 rounded hover:bg-gray-600 hover:cursor-pointer"
-                  title="Logout"
-                >   
-                  <p>Logout</p>
-                </li>
-              </div>
-          }
+          {focused === false ? null : (
+            <div>
+              <li
+                onClick={() => {
+                  navigate('/profile/' + user.username);
+                  navigate(0);
+                }}
+                className="py-2 px-4 rounded hover:bg-gray-600 hover:cursor-pointer"
+                title="Your profile"
+              >
+                <p>Profile</p>
+              </li>
+              <li
+                onClick={() => {
+                  navigate('/settings/');
+                  navigate(0);
+                }}
+                className="py-2 px-4 rounded hover:bg-gray-600 hover:cursor-pointer"
+                title="User settings"
+              >
+                <p>Settings</p>
+              </li>
+              <li
+                onClick={logout}
+                className="py-2 px-4 rounded hover:bg-gray-600 hover:cursor-pointer"
+                title="Logout"
+              >
+                <p>Logout</p>
+              </li>
+            </div>
+          )}
         </ul>
       </div>
     </div>
-  )
+  );
 }
 
 export default ProfileButton;

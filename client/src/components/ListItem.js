@@ -7,7 +7,7 @@ function ListItem({ user, token, item, setSuccess }) {
   const { username } = useParams();
   const deleteItem = (id) => {
     axios
-      .delete(`http://localhost:5000/items/delete/` + id, {
+      .delete(process.env.REACT_APP_API_URL + '/items/delete/' + id, {
         headers: {
           Authorization: 'Bearer ' + token,
         },

@@ -29,8 +29,8 @@ export default function ItemForm({ token, setSuccess, item }) {
     e.preventDefault();
     axios[!item ? 'post' : 'put'](
       !item
-        ? 'http://localhost:5000/items/add'
-        : 'http://localhost:5000/items/update/' + item.itemId,
+        ? process.env.REACT_APP_API_URL + '/items/add'
+        : process.env.REACT_APP_API_URL + '/items/update/' + item.itemId,
       fields,
       request
     )

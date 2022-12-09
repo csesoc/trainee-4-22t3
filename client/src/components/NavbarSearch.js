@@ -16,7 +16,7 @@ function NavbarSearch() {
 
   useEffect(() => {
     axios
-      .get('http://localhost:5000/users/search?searchStr=' + input)
+      .get(process.env.REACT_APP_API_URL + '/users/search?searchStr=' + input)
       .then((response) => setUserMatches(response.data))
       .then(() => {
         if (input !== '' && focused === true) {
@@ -83,16 +83,14 @@ function NavbarSearch() {
           {displaySearches === false
             ? null
             : userMatches.map((username) => (
-              <li
-                class="hover:bg-gray-600 hover:rounded hover:cursor-pointer"
-              >
-                <div class="py-2 px-4">
-                  <a href={'http://localhost:3000/profile/' + username}>
-                    <p>{username}</p>
-                  </a>
-                </div>
-              </li>
-            ))}
+                <li class="hover:bg-gray-600 hover:rounded hover:cursor-pointer">
+                  <div class="py-2 px-4">
+                    <a href={'http://localhost:3000/profile/' + username}>
+                      <p>{username}</p>
+                    </a>
+                  </div>
+                </li>
+              ))}
         </ul>
       </div>
     </div>
