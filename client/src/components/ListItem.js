@@ -17,13 +17,16 @@ function ListItem({ user, token, item, setSuccess }) {
   return (
     <>
       <div className="relative w-48">
-        {username === user.username && (
+        {user && username === user.username
+          ? 
           <div className="flex align-end absolute left-0 top-0">
             <button onClick={() => deleteItem(item.itemId.toString())}>
               <FaWindowClose />
             </button>
           </div>
-        )}
+          :
+          null
+        }
         <a href={item.imageRef} className="link bg-center">
           <img
             src={item.imageUrl}
@@ -57,7 +60,10 @@ function ListItem({ user, token, item, setSuccess }) {
             </div>
           ))}
         </div>
-        <EditForm item={item} setSuccess={setSuccess} user={user} />
+        {user
+          ? <EditForm item={item} setSuccess={setSuccess} user={user} />
+          : null
+        }
       </div>
     </>
   );

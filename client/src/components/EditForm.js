@@ -8,7 +8,8 @@ export default function EditForm({ item, setSuccess, user }) {
   const [change, setChange] = useState(false);
   return (
     <>
-      {username === user.username && (
+      {user && username === user.username 
+        ?
         <div className="inset-x-0 bottom-0 flex justify-center">
           <button
             type="submit"
@@ -37,7 +38,8 @@ export default function EditForm({ item, setSuccess, user }) {
             {item ? 'Edit Item' : 'Add Item'}
           </button>
         </div>
-      )}
+        : null
+      }
       {change && (
         <>
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
