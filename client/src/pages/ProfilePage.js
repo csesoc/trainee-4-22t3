@@ -32,7 +32,7 @@ function ProfilePage({ user, setUser }) {
             category={category}
             items={identiFunners[category]}
             setSuccess={setSuccess}
-            token={user.token}
+            token={user ? user.token : null}
             user={user}
           />
         ))}
